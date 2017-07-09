@@ -1,0 +1,37 @@
+.pell {
+  border-radius: 5px;
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  box-sizing: border-box;
+  padding: 10px;
+  position: relative;
+  width: 100%; }
+
+.pell-editor {
+  box-sizing: border-box;
+  height: 100%;
+  outline: 0;
+  overflow-y: auto;
+  padding-top: 30px;
+  width: 100%; }
+
+.pell-actionbar {
+  background-color: #FFF;
+  border-bottom: 1px solid rgba(10, 10, 10, 0.1);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  height: 30px;
+  left: 0;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  position: absolute;
+  top: 0;
+  white-space: nowrap;
+  width: 100%; }
+
+.pell-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  height: 100%;
+  outline: 0;
+  width: 30px; }
