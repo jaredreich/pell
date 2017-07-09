@@ -1,4 +1,4 @@
-if (!document.contentEditable && !document.execCommand) {
+if (document && !document.contentEditable && !document.execCommand) {
   // eslint-disable-next-line no-console
   console.error('HTML5 Document Editing API Is Not Supported')
 }
