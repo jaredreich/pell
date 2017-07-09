@@ -1,10 +1,3 @@
-if (document && !document.contentEditable && !document.execCommand) {
-  // eslint-disable-next-line no-console
-  console.error('HTML5 Document Editing API Is Not Supported')
-}
-
-const self = {}
-
 const defaultSettings = {
   classes: {
     actionbar: 'pell-actionbar',
@@ -125,16 +118,16 @@ export const init = settings => {
 
   settings.classes = { ...defaultSettings.classes, ...settings.classes }
 
-  self.root = document.getElementById(settings.root)
-  self.editor = document.createElement('div')
-  self.editor.contentEditable = true
-  self.editor.className = settings.classes.editor
-  self.editor.oninput = event => settings.onChange && settings.onChange(event.target.innerHTML)
-  self.root.appendChild(self.editor)
+  const root = document.getElementById(settings.root)
+  const editor = document.createElement('div')
+  editor.contentEditable = true
+  editor.className = settings.classes.editor
+  editor.oninput = event => settings.onChange && settings.onChange(event.target.innerHTML)
+  root.appendChild(editor)
 
-  self.actionbar = document.createElement('div')
-  self.actionbar.className = settings.classes.actionbar
-  self.root.appendChild(self.actionbar)
+  const actionbar = document.createElement('div')
+  actionbar.className = settings.classes.actionbar
+  root.appendChild(actionbar)
 
   settings.actions.forEach(action => {
     const button = document.createElement('button')
@@ -142,7 +135,7 @@ export const init = settings => {
     button.innerHTML = action.icon
     button.title = action.title
     button.onclick = action.result
-    self.actionbar.appendChild(button)
+    actionbar.appendChild(button)
   })
 }
 

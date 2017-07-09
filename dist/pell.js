@@ -89,13 +89,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-if (!document.contentEditable && !document.execCommand) {
-  // eslint-disable-next-line no-console
-  console.error('HTML5 Document Editing API Is Not Supported');
-}
-
-var self = {};
-
 var defaultSettings = {
   classes: {
     actionbar: 'pell-actionbar',
@@ -246,18 +239,18 @@ var init = exports.init = function init(settings) {
 
   settings.classes = _extends({}, defaultSettings.classes, settings.classes);
 
-  self.root = document.getElementById(settings.root);
-  self.editor = document.createElement('div');
-  self.editor.contentEditable = true;
-  self.editor.className = settings.classes.editor;
-  self.editor.oninput = function (event) {
+  var root = document.getElementById(settings.root);
+  var editor = document.createElement('div');
+  editor.contentEditable = true;
+  editor.className = settings.classes.editor;
+  editor.oninput = function (event) {
     return settings.onChange && settings.onChange(event.target.innerHTML);
   };
-  self.root.appendChild(self.editor);
+  root.appendChild(editor);
 
-  self.actionbar = document.createElement('div');
-  self.actionbar.className = settings.classes.actionbar;
-  self.root.appendChild(self.actionbar);
+  var actionbar = document.createElement('div');
+  actionbar.className = settings.classes.actionbar;
+  root.appendChild(actionbar);
 
   settings.actions.forEach(function (action) {
     var button = document.createElement('button');
@@ -265,7 +258,7 @@ var init = exports.init = function init(settings) {
     button.innerHTML = action.icon;
     button.title = action.title;
     button.onclick = action.result;
-    self.actionbar.appendChild(button);
+    actionbar.appendChild(button);
   });
 };
 
