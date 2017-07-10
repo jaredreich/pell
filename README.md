@@ -6,6 +6,8 @@
 
 Live demo: [https://jaredreich.com/pell](https://jaredreich.com/pell)
 
+![Alt text](/demo.gif?raw=true "Demo")
+
 ## Comparisons (minified)
 
 | Library       | Size (minified) | jQuery | Bootstrap |
