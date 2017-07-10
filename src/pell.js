@@ -56,6 +56,26 @@ const actions = {
     title: 'Heading 2',
     result: () => execute('formatBlock', '<H2>')
   },
+  heading3: {
+    icon: '<b>H<sub>3</sub></b>',
+    title: 'Heading 3',
+    result: () => execute('formatBlock', '<H3>')
+  },
+  heading4: {
+    icon: '<b>H<sub>4</sub></b>',
+    title: 'Heading 4',
+    result: () => execute('formatBlock', '<H4>') 
+  },
+  heading5: {
+    icon: '<b>H<sub>5</sub></b>',
+    title: 'Heading 5',
+    result: () => execute('formatBlock', '<H5>') 
+  },
+  heading6: {
+    icon: '<b>H<sub>6</sub></b>',
+    title: 'Heading 6',
+    result: () => execute('formatBlock', '<H6>') 
+  },
   paragraph: {
     icon: '&#182;',
     title: 'Paragraph',
