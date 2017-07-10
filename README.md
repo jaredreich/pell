@@ -1,4 +1,4 @@
-![Alt text](/logo.png?raw=true "Logo")
+![Alt text](/logo.png?raw=true "Logo"){:height="256px" width="256px"}
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
