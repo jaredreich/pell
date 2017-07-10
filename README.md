@@ -2,7 +2,9 @@
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
-> pell is the simplest and smallest WYSIWYG text editor for web, with no dependencies
+> pell is the simplest and smallest (5kB) WYSIWYG text editor for web, with no dependencies
+
+Live demo: [https://jaredreich.com/pell](https://jaredreich.com/pell)
 
 ## Comparisons (minified)
 
