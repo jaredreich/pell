@@ -76,8 +76,8 @@ npm install --save pell
   <link rel="stylesheet" type="text/css" href="https://unpkg.com/pell/dist/pell.min.css">
   <style>
     /* override styles here */
-    .pell-container {
-      box-shadow: none;
+    .pell-editor {
+      background-color: pink;
     }
   </style>
 </head>
