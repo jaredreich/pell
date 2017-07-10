@@ -1,4 +1,4 @@
-![Alt text](/logo.png?raw=true "Logo")
+<img src="./logo.png" width="256" alt="Logo">
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
