@@ -118,7 +118,9 @@ export const init = settings => {
 
   settings.classes = { ...defaultSettings.classes, ...settings.classes }
 
-  const root = document.getElementById(settings.root)
+  const root = settings.root instanceof window.HTMLElement
+    ? settings.root
+    : document.getElementById(settings.root)
   const editor = document.createElement('div')
   editor.contentEditable = true
   editor.className = settings.classes.editor
