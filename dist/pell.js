@@ -240,6 +240,11 @@ var init = exports.init = function init(settings) {
   settings.classes = _extends({}, defaultSettings.classes, settings.classes);
 
   var root = document.getElementById(settings.root);
+
+  var actionbar = document.createElement('div');
+  actionbar.className = settings.classes.actionbar;
+  root.appendChild(actionbar);
+
   var editor = document.createElement('div');
   editor.contentEditable = true;
   editor.className = settings.classes.editor;
@@ -247,10 +252,6 @@ var init = exports.init = function init(settings) {
     return settings.onChange && settings.onChange(event.target.innerHTML);
   };
   root.appendChild(editor);
-
-  var actionbar = document.createElement('div');
-  actionbar.className = settings.classes.actionbar;
-  root.appendChild(actionbar);
 
   settings.actions.forEach(function (action) {
     var button = document.createElement('button');

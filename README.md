@@ -145,8 +145,7 @@ pell.init({
 #### SCSS:
 
 ```scss
-// Before pell is imported:
-$pell-border-color: #000;
+$pell-editor-height: 400px;
 // See all overwriteable variables in src/pell.scss
 
 // Then import pell.scss into styles:
@@ -158,7 +157,7 @@ $pell-border-color: #000;
 ```css
 /* After pell styles are applied to DOM: */
 .pell-editor {
-  background-color: pink;
+  height: 400px;
 }
 ```
 

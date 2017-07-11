@@ -119,15 +119,16 @@ export const init = settings => {
   settings.classes = { ...defaultSettings.classes, ...settings.classes }
 
   const root = document.getElementById(settings.root)
+
+  const actionbar = document.createElement('div')
+  actionbar.className = settings.classes.actionbar
+  root.appendChild(actionbar)
+
   const editor = document.createElement('div')
   editor.contentEditable = true
   editor.className = settings.classes.editor
   editor.oninput = event => settings.onChange && settings.onChange(event.target.innerHTML)
   root.appendChild(editor)
-
-  const actionbar = document.createElement('div')
-  actionbar.className = settings.classes.actionbar
-  root.appendChild(actionbar)
 
   settings.actions.forEach(action => {
     const button = document.createElement('button')

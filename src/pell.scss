@@ -1,27 +1,27 @@
 $pell-actionbar-color: #FFF !default;
-$pell-actionbar-height: 30px !default;
 $pell-border-color: rgba(10, 10, 10, 0.1) !default;
 $pell-border-radius: 5px !default;
 $pell-border-style: solid !default;
 $pell-border-width: 1px !default;
 $pell-box-shadow: 0 2px 3px $pell-border-color, 0 0 0 1px $pell-border-color !default;
+$pell-button-height: 30px !default;
 $pell-button-width: 30px !default;
+$pell-editor-height: 300px !default;
+$pell-editor-padding: 10px !default;
 
 .pell {
   border-radius: $pell-border-radius;
   box-shadow: $pell-box-shadow;
   box-sizing: border-box;
-  padding: 10px;
-  position: relative;
   width: 100%;
 }
 
 .pell-editor {
   box-sizing: border-box;
-  height: 100%;
+  height: $pell-editor-height;
   outline: 0;
   overflow-y: auto;
-  padding-top: $pell-actionbar-height;
+  padding: $pell-editor-padding;
   width: 100%;
 }
 
@@ -30,13 +30,6 @@ $pell-button-width: 30px !default;
   border-bottom: $pell-border-width $pell-border-style $pell-border-color;
   border-top-left-radius: $pell-border-radius;
   border-top-right-radius: $pell-border-radius;
-  height: $pell-actionbar-height;
-  left: 0;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  position: absolute;
-  top: 0;
-  white-space: nowrap;
   width: 100%;
 }
 
@@ -44,7 +37,7 @@ $pell-button-width: 30px !default;
   background-color: transparent;
   border: none;
   cursor: pointer;
-  height: 100%;
+  height: $pell-button-height;
   outline: 0;
   width: $pell-button-width;
 }
