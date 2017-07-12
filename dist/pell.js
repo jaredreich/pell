@@ -21,8 +21,8 @@ var execute = function execute(command) {
 };
 
 var ensureHTTP = function ensureHTTP(str) {
-  if (str.indexOf('http://') === 0 || str.indexOf('https://') === 0) return str;
-  return 'http://' + str;
+  return (/^https?:\/\//.test(str) && str || 'http://' + str
+  );
 };
 
 var link = function link() {
