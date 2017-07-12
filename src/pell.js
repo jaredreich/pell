@@ -11,8 +11,7 @@ const execute = (command, value = null) => {
 }
 
 const ensureHTTP = str => {
-  if (str.indexOf('http://') === 0 || str.indexOf('https://') === 0) return str
-  return `http://${str}`
+  return /^https?:\/\//.test(str) ? str : `http://${str}`
 }
 
 const link = () => {
