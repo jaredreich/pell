@@ -1,55 +1,57 @@
-const Webpack = require('webpack')
-const gulp = require('gulp')
-const webpack = require('gulp-webpack')
+const babel = require('rollup-plugin-babel')
 const cssnano = require('gulp-cssnano')
-const rename = require('gulp-rename')
-const sass = require('gulp-sass')
 const del = require('del')
+const gulp = require('gulp')
+const rename = require('gulp-rename')
+const Rollup = require('rollup')
+const rollup = require('gulp-rollup')
 const run = require('run-sequence')
+const sass = require('gulp-sass')
+const size = require('gulp-size')
+const uglify = require('rollup-plugin-uglify')
 
 gulp.task('clean', () => del(['./dist']))
 
-const webpackConfig = minimize => ({
-  output: {
-    filename: minimize ? 'pell.min.js' : 'pell.js',
-    library: 'pell',
-    libraryTarget: 'umd'
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: ['babel-loader']
-      }
-    ]
-  },
-  plugins: minimize
-    ? [
-      new Webpack.optimize.UglifyJsPlugin({
-        compress: { warnings: false },
-        mangle: true,
-        sourcemap: false
-      })
-    ]
-    : []
+const rollupConfig = minimize => ({
+  rollup: Rollup,
+  entry: './src/pell.js',
+  moduleName: 'pell',
+  format: 'umd',
+  exports: 'named',
+  plugins: [babel({ exclude: 'node_modules/**' })].concat(
+    minimize
+      ? [
+        uglify({
+          compress: { warnings: false },
+          mangle: true,
+          sourceMap: false
+        })
+      ]
+      : []
+  )
 })
 
 gulp.task('script', () => {
-  gulp.src('./src/pell.js')
-  .pipe(webpack(webpackConfig(false), Webpack))
-  .pipe(gulp.dest('./dist'))
-  .pipe(webpack(webpackConfig(true), Webpack))
-  .pipe(gulp.dest('./dist'))
+  gulp.src('./src/*.js')
+    .pipe(rollup(rollupConfig(false)))
+    .pipe(size({ showFiles: true }))
+    .pipe(gulp.dest('./dist'))
+
+  gulp.src('./src/*.js')
+    .pipe(rollup(rollupConfig(true)))
+    .pipe(rename('pell.min.js'))
+    .pipe(size({ showFiles: true }))
+    .pipe(size({ gzip: true, showFiles: true }))
+    .pipe(gulp.dest('./dist'))
 })
 
 gulp.task('style', () => {
   gulp.src(['./src/pell.scss'])
-  .pipe(sass().on('error', sass.logError))
-  .pipe(gulp.dest('./dist'))
-  .pipe(cssnano())
-  .pipe(rename('pell.min.css'))
-  .pipe(gulp.dest('./dist'))
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('./dist'))
+    .pipe(cssnano())
+    .pipe(rename('pell.min.css'))
+    .pipe(gulp.dest('./dist'))
 })
 
 gulp.task('default', ['clean'], () => {
