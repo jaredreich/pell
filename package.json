@@ -36,6 +36,7 @@
     "gulp-rename": "1.2.2",
     "gulp-rollup": "^2.14.0",
     "gulp-sass": "3.1.0",
+    "gulp-size": "^2.1.0",
     "rollup": "^0.45.1",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-uglify": "^2.0.1",
