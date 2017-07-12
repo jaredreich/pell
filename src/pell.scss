@@ -23,6 +23,7 @@ $pell-editor-padding: 10px !default;
   overflow-y: auto;
   padding: $pell-editor-padding;
   width: 100%;
+  white-space: pre-wrap;
 }
 
 .pell-actionbar {
