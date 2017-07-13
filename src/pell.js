@@ -81,7 +81,7 @@ const actions = {
   line: {
     icon: '&#8213;',
     title: 'Horizontal Line',
-    result: () => execute('insertHorizontalRule', '<PRE>')
+    result: () => execute('insertHorizontalRule')
   },
   link: {
     icon: '&#128279;',
