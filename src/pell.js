@@ -114,10 +114,7 @@ const execute = (command, value = null) => {
   document.execCommand(command, false, value)
 }
 
-const ensureHTTP = str => {
-  if (str.indexOf('http://') === 0 || str.indexOf('https://') === 0) return str
-  return `http://${str}`
-}
+const ensureHTTP = str => /^https?:\/\//.test(str) && str || `http://${str}`
 
 const link = () => {
   const url = window.prompt('Enter the link URL')

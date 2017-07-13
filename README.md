@@ -8,11 +8,11 @@ Live demo: [https://jaredreich.com/pell](https://jaredreich.com/pell)
 
 ![Alt text](/demo.gif?raw=true "Demo")
 
-## Comparisons (minified)
+## Comparisons
 
 | library       | size (min+gzip) | size (min) | jquery | bootstrap |
 |---------------|-----------------|------------|--------|-----------|
-| pell          | 1.5kB           | 5kB        |        |           |
+| pell          | 1.1kB           | 2.9kB      |        |           |
 | medium-editor | 27kB            | 105kB      |        |           |
 | quill         | 43kB            | 205kB      |        |           |
 | summernote    | 26kB            | 93kB       | x      | x         |
