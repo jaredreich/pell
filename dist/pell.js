@@ -14,6 +14,110 @@ var defaultSettings = {
   }
 };
 
+var keyCodes = {
+  TAB: {
+    code: 9,
+    symbol: 'Tab'
+  },
+  CTRL: {
+    code: 17,
+    symbol: 'Ctrl'
+  },
+  SHIFT: {
+    code: 16,
+    symbol: 'Shift'
+  },
+  ALT: {
+    code: 18,
+    symbol: 'Alt'
+  },
+  ONE: {
+    code: 49,
+    symbol: '1'
+  },
+  TWO: {
+    code: 50,
+    symbol: '2'
+  },
+  SEVEN: {
+    code: 55,
+    symbol: '7'
+  },
+  B: {
+    code: 66,
+    symbol: 'B'
+  },
+  I: {
+    code: 73,
+    symbol: 'I'
+  },
+  K: {
+    code: 75,
+    symbol: 'K'
+  },
+  O: {
+    code: 79,
+    symbol: 'O'
+  },
+  P: {
+    code: 80,
+    symbol: 'P'
+  },
+  Q: {
+    code: 81,
+    symbol: 'Q'
+  },
+  S: {
+    code: 83,
+    symbol: 'S'
+  },
+  U: {
+    code: 85,
+    symbol: 'U'
+  },
+  Z: {
+    code: 90,
+    symbol: 'Z'
+  },
+  QUOTE: {
+    code: 222,
+    symbol: '\''
+  }
+};
+
+var listener = {
+  keys: {},
+  add: function add(array, func, className) {
+    var hey = this;
+    var counter = this.stingify(array);
+    this.keys[counter] = func;
+    var collect = [];
+    document.getElementsByClassName(className)[0].addEventListener('keydown', function (e) {
+      if (e.keyCode === array[collect.length]) {
+        collect[collect.length] = e.keyCode;
+      } else {
+        collect = [];
+      }
+      if (collect.length === array.length) {
+        collect = [];
+        hey.keys[counter]();
+        e.preventDefault();
+      }
+    }, false);
+  },
+  stingify: function stingify(array) {
+    var counter = '';
+    for (var x in array) {
+      if (x === 0) {
+        counter += array[x];
+      } else {
+        counter += '+' + array[x];
+      }
+    }
+    return counter;
+  }
+};
+
 var execute = function execute(command) {
   var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
@@ -39,6 +143,7 @@ var actions = {
   bold: {
     icon: '<b>B</b>',
     title: 'Bold',
+    shortcut: [keyCodes.CTRL, keyCodes.B],
     result: function result() {
       return execute('bold');
     }
@@ -46,6 +151,7 @@ var actions = {
   italic: {
     icon: '<i>I</i>',
     title: 'Italic',
+    shortcut: [keyCodes.CTRL, keyCodes.I],
     result: function result() {
       return execute('italic');
     }
@@ -53,6 +159,7 @@ var actions = {
   underline: {
     icon: '<u>U</u>',
     title: 'Underline',
+    shortcut: [keyCodes.CTRL, keyCodes.U],
     result: function result() {
       return execute('underline');
     }
@@ -60,6 +167,7 @@ var actions = {
   strikethrough: {
     icon: '<strike>S</strike>',
     title: 'Strike-through',
+    shortcut: [keyCodes.CTRL, keyCodes.S],
     result: function result() {
       return execute('strikeThrough');
     }
@@ -67,6 +175,7 @@ var actions = {
   heading1: {
     icon: '<b>H<sub>1</sub></b>',
     title: 'Heading 1',
+    shortcut: [keyCodes.CTRL, keyCodes.ONE],
     result: function result() {
       return execute('formatBlock', '<H1>');
     }
@@ -74,6 +183,7 @@ var actions = {
   heading2: {
     icon: '<b>H<sub>2</sub></b>',
     title: 'Heading 2',
+    shortcut: [keyCodes.CTRL, keyCodes.TWO],
     result: function result() {
       return execute('formatBlock', '<H2>');
     }
@@ -81,6 +191,7 @@ var actions = {
   paragraph: {
     icon: '&#182;',
     title: 'Paragraph',
+    shortcut: [keyCodes.CTRL, keyCodes.SEVEN],
     result: function result() {
       return execute('formatBlock', '<P>');
     }
@@ -88,6 +199,7 @@ var actions = {
   quote: {
     icon: '&#8220; &#8221;',
     title: 'Quote',
+    shortcut: [keyCodes.CTRL, keyCodes.QUOTE],
     result: function result() {
       return execute('formatBlock', '<BLOCKQUOTE>');
     }
@@ -95,6 +207,7 @@ var actions = {
   olist: {
     icon: '&#35;',
     title: 'Ordered List',
+    shortcut: [keyCodes.CTRL, keyCodes.ALT, keyCodes.O],
     result: function result() {
       return execute('insertOrderedList');
     }
@@ -102,6 +215,7 @@ var actions = {
   ulist: {
     icon: '&#8226;',
     title: 'Unordered List',
+    shortcut: [keyCodes.CTRL, keyCodes.ALT, keyCodes.U],
     result: function result() {
       return execute('insertUnorderedList');
     }
@@ -109,6 +223,7 @@ var actions = {
   code: {
     icon: '&lt;/&gt;',
     title: 'Code',
+    shortcut: [keyCodes.CTRL, keyCodes.Q],
     result: function result() {
       return execute('formatBlock', '<PRE>');
     }
@@ -116,6 +231,7 @@ var actions = {
   line: {
     icon: '&#8213;',
     title: 'Horizontal Line',
+    shortcut: [keyCodes.CTRL, keyCodes.SHIFT, keyCodes.B],
     result: function result() {
       return execute('insertHorizontalRule', '<PRE>');
     }
@@ -123,16 +239,19 @@ var actions = {
   link: {
     icon: '&#128279;',
     title: 'Link',
+    shortcut: [keyCodes.CTRL, keyCodes.K],
     result: link
   },
   image: {
     icon: '&#128247;',
     title: 'Image',
+    shortcut: [keyCodes.CTRL, keyCodes.P],
     result: image
   },
   undo: {
     icon: '&#8634;',
     title: 'Undo',
+    shortcut: [keyCodes.CTRL, keyCodes.Z],
     result: function result() {
       return execute('undo');
     }
@@ -140,6 +259,7 @@ var actions = {
   redo: {
     icon: '&#8635;',
     title: 'Redo',
+    shortcut: [keyCodes.CTRL, keyCodes.SHIFT, keyCodes.B],
     result: function result() {
       return execute('redo');
     }
@@ -174,10 +294,20 @@ var init = function init(settings) {
     var button = document.createElement('button');
     button.className = settings.classes.button;
     button.innerHTML = action.icon;
-    button.title = action.title;
+    var helpText = action.shortcut.map(function (s) {
+      return s.symbol;
+    }).join(' + ');
+    button.title = action.title + ' (' + helpText + ')';
     button.onclick = action.result;
     actionbar.appendChild(button);
+    var codes = action.shortcut.map(function (s) {
+      return s.code;
+    });
+    listener.add(codes, action.result, settings.classes.editor);
   });
+  listener.add([keyCodes.TAB.code], function () {
+    execute('insertHTML', '\xA0\xA0\xA0\xA0');
+  }, settings.classes.editor);
 };
 
 var pell = { init: init };
