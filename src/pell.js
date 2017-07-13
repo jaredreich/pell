@@ -8,6 +8,7 @@ const defaultSettings = {
 
 const execute = (command, value = null) => {
   document.execCommand(command, false, value)
+  return false
 }
 
 const ensureHTTP = str => /^https?:\/\//.test(str) && str || `http://${str}`
