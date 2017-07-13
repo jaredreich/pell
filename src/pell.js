@@ -11,7 +11,7 @@ const execute = (command, value = null) => {
   document.execCommand(command, false, value)
 }
 
-const commandState = (command) => document.queryCommandState(command)
+const commandState = command => document.queryCommandState(command)
 
 const ensureHTTP = str => /^https?:\/\//.test(str) && str || `http://${str}`
 
@@ -29,26 +29,26 @@ const actions = {
   bold: {
     icon: '<b>B</b>',
     title: 'Bold',
-    result: () => execute('bold'),
-    state: () => commandState('bold')
+    state: () => commandState('bold'),
+    result: () => execute('bold')
   },
   italic: {
     icon: '<i>I</i>',
     title: 'Italic',
-    result: () => execute('italic'),
-    state: () => commandState('italic')
+    state: () => commandState('italic'),
+    result: () => execute('italic')
   },
   underline: {
     icon: '<u>U</u>',
     title: 'Underline',
-    result: () => execute('underline'),
-    state: () => commandState('underline')
+    state: () => commandState('underline'),
+    result: () => execute('underline')
   },
   strikethrough: {
     icon: '<strike>S</strike>',
     title: 'Strike-through',
-    result: () => execute('strikeThrough'),
-    state: () => commandState('strikeThrough')
+    state: () => commandState('strikeThrough'),
+    result: () => execute('strikeThrough')
   },
   heading1: {
     icon: '<b>H<sub>1</sub></b>',
@@ -140,13 +140,13 @@ export const init = settings => {
     button.innerHTML = action.icon
     button.title = action.title
     button.onclick = action.result
-    if(action.state){
+    if (action.state) {
       const handler = () => {
-          if (action.state()) {
-              button.classList.add(settings.classes.selected);
-          } else {
-              button.classList.remove(settings.classes.selected);
-          }
+        if (action.state()) {
+          button.classList.add(settings.classes.selected)
+        } else {
+          button.classList.remove(settings.classes.selected)
+        }
       }
       editor.addEventListener('keyup', handler)
       editor.addEventListener('mouseup', handler)
