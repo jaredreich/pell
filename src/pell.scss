@@ -41,3 +41,7 @@ $pell-editor-padding: 10px !default;
   outline: 0;
   width: $pell-button-width;
 }
+
+.pell-button-selected {
+  background-color: lightgreen;
+}

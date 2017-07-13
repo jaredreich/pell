@@ -2,6 +2,7 @@ const defaultSettings = {
   classes: {
     actionbar: 'pell-actionbar',
     button: 'pell-button',
+    selected: 'pell-button-selected',
     editor: 'pell-editor'
   }
 }
@@ -9,6 +10,8 @@ const defaultSettings = {
 const execute = (command, value = null) => {
   document.execCommand(command, false, value)
 }
+
+const commandState = (command) => document.queryCommandState(command)
 
 const ensureHTTP = str => /^https?:\/\//.test(str) && str || `http://${str}`
 
@@ -26,7 +29,8 @@ const actions = {
   bold: {
     icon: '<b>B</b>',
     title: 'Bold',
-    result: () => execute('bold')
+    result: () => execute('bold'),
+    state: () => commandState('bold')
   },
   italic: {
     icon: '<i>I</i>',
@@ -133,6 +137,18 @@ export const init = settings => {
     button.innerHTML = action.icon
     button.title = action.title
     button.onclick = action.result
+    if(action.state){
+      const handler = () => {
+          if (action.state()) {
+              button.classList.add(settings.classes.selected);
+          } else {
+              button.classList.remove(settings.classes.selected);
+          }
+      }
+      setInterval(handler,100)
+      // editor.addEventListener('keydown', handler, {passive: true})
+      // editor.addEventListener('mousedown', handler, {passive: true})
+    }
     actionbar.appendChild(button)
   })
 }
