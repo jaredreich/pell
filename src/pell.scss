@@ -17,6 +17,7 @@ $pell-editor-padding: 10px !default;
 }
 
 .pell-editor {
+  white-space:pre-wrap;
   box-sizing: border-box;
   height: $pell-editor-height;
   outline: 0;
