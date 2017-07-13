@@ -165,6 +165,13 @@ var init = function init(settings) {
   var editor = document.createElement('div');
   editor.contentEditable = true;
   editor.className = settings.classes.editor;
+  editor.onkeydown = function (event) {
+    if (event.which === 9) {
+      event.preventDefault();
+      execute('insertHTML', '&#09');
+    }
+  };
+
   editor.oninput = function (event) {
     return settings.onChange && settings.onChange(event.target.innerHTML);
   };
