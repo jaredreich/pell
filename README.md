@@ -12,7 +12,7 @@ Live demo: [https://jaredreich.com/pell](https://jaredreich.com/pell)
 
 | library       | size (min+gzip) | size (min) | jquery | bootstrap |
 |---------------|-----------------|------------|--------|-----------|
-| pell          | 1.1kB           | 2.9kB      |        |           |
+| pell          | 1.64kB          | 4.29kB     |        |           |
 | medium-editor | 27kB            | 105kB      |        |           |
 | quill         | 43kB            | 205kB      |        |           |
 | summernote    | 26kB            | 93kB       | x      | x         |
