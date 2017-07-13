@@ -35,17 +35,20 @@ const actions = {
   italic: {
     icon: '<i>I</i>',
     title: 'Italic',
-    result: () => execute('italic')
+    result: () => execute('italic'),
+    state: () => commandState('italic')
   },
   underline: {
     icon: '<u>U</u>',
     title: 'Underline',
-    result: () => execute('underline')
+    result: () => execute('underline'),
+    state: () => commandState('underline')
   },
   strikethrough: {
     icon: '<strike>S</strike>',
     title: 'Strike-through',
-    result: () => execute('strikeThrough')
+    result: () => execute('strikeThrough'),
+    state: () => commandState('strikeThrough')
   },
   heading1: {
     icon: '<b>H<sub>1</sub></b>',
@@ -145,9 +148,9 @@ export const init = settings => {
               button.classList.remove(settings.classes.selected);
           }
       }
-      setInterval(handler,100)
-      // editor.addEventListener('keydown', handler, {passive: true})
-      // editor.addEventListener('mousedown', handler, {passive: true})
+      editor.addEventListener('keyup', handler)
+      editor.addEventListener('mouseup', handler)
+      button.addEventListener('click', handler)
     }
     actionbar.appendChild(button)
   })

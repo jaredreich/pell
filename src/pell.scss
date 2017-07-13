@@ -36,6 +36,7 @@ $pell-editor-padding: 10px !default;
 .pell-button {
   background-color: transparent;
   border: none;
+  border-radius: 5px;
   cursor: pointer;
   height: $pell-button-height;
   outline: 0;
@@ -43,5 +44,5 @@ $pell-editor-padding: 10px !default;
 }
 
 .pell-button-selected {
-  background-color: lightgreen;
+  background-color: lightgray;
 }
