@@ -172,7 +172,7 @@ var init = function init(settings) {
     if (event.which === 13) {
       if (enterKeyState) {
         insertElement = '<br><br>';
-        execute('outdent');
+        execute('formatBlock', '<div>');
       }
       enterKeyState = true;
     } else {
