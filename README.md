@@ -15,10 +15,10 @@ Live demo: [https://jaredreich.com/pell](https://jaredreich.com/pell)
 | pell          | 1.1kB           | 2.9kB      |        |           |
 | medium-editor | 27kB            | 105kB      |        |           |
 | quill         | 43kB            | 205kB      |        |           |
+| ckeditor      | 163kB           | 551kB      |        |           |
 | summernote    | 26kB            | 93kB       | x      | x         |
 | froala        | 52kB            | 186kB      | x      |           |
 | tinymce       | 157kB           | 491kB      | x      |           |
-| ckeditor      | 163kB           | 551kB      | x      |           |
 
 ## Features
 
