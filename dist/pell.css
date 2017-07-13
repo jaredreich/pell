@@ -5,6 +5,7 @@
   width: 100%; }
 
 .pell-editor {
+  white-space: pre-wrap;
   box-sizing: border-box;
   height: 300px;
   outline: 0;

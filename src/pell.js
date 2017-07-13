@@ -124,6 +124,13 @@ export const init = settings => {
   const editor = document.createElement('div')
   editor.contentEditable = true
   editor.className = settings.classes.editor
+  editor.onkeydown = event => {
+    if (event.which === 9) {
+      event.preventDefault()
+      execute('insertHTML', '&#09')
+    }
+  }
+
   editor.oninput = event => settings.onChange && settings.onChange(event.target.innerHTML)
   root.appendChild(editor)
 
