@@ -124,6 +124,27 @@ export const init = settings => {
   const editor = document.createElement('div')
   editor.contentEditable = true
   editor.className = settings.classes.editor
+  editor.enterKeyState = false
+  let enterKeyState = editor.enterKeyState
+  editor.onkeydown = event => {
+    let insertElement
+    if (event.which === 13) {
+      if (enterKeyState) {
+        insertElement = '<br><br>'
+        execute('outdent')
+      }
+      enterKeyState = true
+    } else {
+      if (event.which === 9) {
+        insertElement = '&#09'
+      }
+      enterKeyState = false
+    }
+    if (insertElement) {
+      event.preventDefault()
+      execute('insertHTML', insertElement)
+    }
+  }
   editor.oninput = event => settings.onChange && settings.onChange(event.target.innerHTML)
   root.appendChild(editor)
 
