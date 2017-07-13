@@ -130,7 +130,6 @@ export const init = settings => {
     let insertElement
     if (event.which === 13) {
       if (enterKeyState) {
-        insertElement = '<br><br>'
         execute('formatBlock', '<div>')
       }
       enterKeyState = true

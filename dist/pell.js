@@ -171,7 +171,6 @@ var init = function init(settings) {
     var insertElement = void 0;
     if (event.which === 13) {
       if (enterKeyState) {
-        insertElement = '<br><br>';
         execute('formatBlock', '<div>');
       }
       enterKeyState = true;
