@@ -18,6 +18,7 @@ var execute = function execute(command) {
   var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
   document.execCommand(command, false, value);
+  return false;
 };
 
 var ensureHTTP = function ensureHTTP(str) {
