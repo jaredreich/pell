@@ -165,6 +165,26 @@ var init = function init(settings) {
   var editor = document.createElement('div');
   editor.contentEditable = true;
   editor.className = settings.classes.editor;
+  editor.enterKeyState = false;
+  var enterKeyState = editor.enterKeyState;
+  editor.onkeydown = function (event) {
+    var insertElement = void 0;
+    if (event.which === 13) {
+      if (enterKeyState) {
+        execute('formatBlock', '<div>');
+      }
+      enterKeyState = true;
+    } else {
+      if (event.which === 9) {
+        insertElement = '&#09';
+      }
+      enterKeyState = false;
+    }
+    if (insertElement) {
+      event.preventDefault();
+      execute('insertHTML', insertElement);
+    }
+  };
   editor.oninput = function (event) {
     return settings.onChange && settings.onChange(event.target.innerHTML);
   };
