@@ -143,6 +143,34 @@ var actions = {
     result: function result() {
       return execute('redo');
     }
+  },
+  justifyL: {
+    icon: 'left',
+    title: 'Justify left',
+    result: function result() {
+      return execute('justifyLeft');
+    }
+  },
+  justifyR: {
+    icon: 'right',
+    title: 'Justify right',
+    result: function result() {
+      return execute('justifyRight');
+    }
+  },
+  justifyC: {
+    icon: 'cntr',
+    title: 'Justify center',
+    result: function result() {
+      return execute('justifyCenter');
+    }
+  },
+  justifyF: {
+    icon: 'fill',
+    title: 'Justify full',
+    result: function result() {
+      return execute('justifyFull');
+    }
   }
 };
 
