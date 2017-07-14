@@ -102,6 +102,26 @@ const actions = {
     icon: '&#8635;',
     title: 'Redo',
     result: () => execute('redo')
+  },
+  justifyL: {
+    icon: 'left',
+    title: 'Justify left',
+    result: () => execute('justifyLeft')
+  },
+  justifyR: {
+    icon: 'right',
+    title: 'Justify right',
+    result: () => execute('justifyRight')
+  },
+  justifyC: {
+    icon: 'cntr',
+    title: 'Justify center',
+    result: () => execute('justifyCenter')
+  },
+  justifyF: {
+    icon: 'fill',
+    title: 'Justify full',
+    result: () => execute('justifyFull')
   }
 }
 
