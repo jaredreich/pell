@@ -119,13 +119,6 @@ export const init = settings => {
 
   const actionbar = document.createElement('div')
   actionbar.className = settings.classes.actionbar
-  root.appendChild(actionbar)
-
-  const editor = document.createElement('div')
-  editor.contentEditable = true
-  editor.className = settings.classes.editor
-  editor.oninput = event => settings.onChange && settings.onChange(event.target.innerHTML)
-  root.appendChild(editor)
 
   settings.actions.forEach(action => {
     const button = document.createElement('button')
@@ -135,6 +128,14 @@ export const init = settings => {
     button.onclick = action.result
     actionbar.appendChild(button)
   })
+
+  root.appendChild(actionbar)
+
+  const editor = document.createElement('div')
+  editor.contentEditable = true
+  editor.className = settings.classes.editor
+  editor.oninput = event => settings.onChange && settings.onChange(event.target.innerHTML)
+  root.appendChild(editor)
 }
 
 export default { init }
