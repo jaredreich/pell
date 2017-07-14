@@ -35,6 +35,12 @@ var image = function image() {
   if (url) execute('insertImage', ensureHTTP(url));
 };
 
+var video = function video() {
+  var url = window.prompt('Enter the video URL');
+  var type = window.prompt('Enter the video type');
+  if (url) execute('insertHTML', '<video width="400" controls>' + ('<source src="ensureHTTP(url)" type="video/' + type + '">') + 'Your browser does not support HTML5 video.' + '</video>');
+};
+
 var actions = {
   bold: {
     icon: '<b>B</b>',
@@ -143,6 +149,11 @@ var actions = {
     result: function result() {
       return execute('redo');
     }
+  },
+  video: {
+    icon: '&#128249;',
+    title: 'video',
+    result: video
   }
 };
 

@@ -22,6 +22,15 @@ const image = () => {
   if (url) execute('insertImage', ensureHTTP(url))
 }
 
+const video = () => {
+  const url = window.prompt('Enter the video URL')
+  const type = window.prompt('Enter the video type')
+  if (url) execute('insertHTML', '<video width="400" controls>' + 
+    `<source src="ensureHTTP(url)" type="video/${type}">` +
+    'Your browser does not support HTML5 video.' +
+    '</video>')
+}
+
 const actions = {
   bold: {
     icon: '<b>B</b>',
@@ -102,6 +111,11 @@ const actions = {
     icon: '&#8635;',
     title: 'Redo',
     result: () => execute('redo')
+  },
+  video: {
+    icon: '&#128249;',
+    title: 'video',
+    result: video
   }
 }
 
