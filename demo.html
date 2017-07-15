@@ -59,20 +59,20 @@
             name: 'zitalic',
             icon: 'Z',
             title: 'Zitalic',
-            result: () => window.pell.execute('italic')
+            result: () => window.pell.exec('italic')
           },
           {
             name: 'image',
             result: () => {
               const url = window.prompt('Enter the image URL')
-              if (url) window.pell.execute('insertImage', ensureHTTP(url))
+              if (url) window.pell.exec('insertImage', ensureHTTP(url))
             }
           },
           {
             name: 'link',
             result: () => {
               const url = window.prompt('Enter the link URL')
-              if (url) window.pell.execute('createLink', ensureHTTP(url))
+              if (url) window.pell.exec('createLink', ensureHTTP(url))
             }
           }
         ],

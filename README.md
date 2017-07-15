@@ -12,7 +12,7 @@ Live demo: [https://jaredreich.com/pell](https://jaredreich.com/pell)
 
 | library       | size (min+gzip) | size (min) | jquery | bootstrap |
 |---------------|-----------------|------------|--------|-----------|
-| pell          | 1.11kB          | 2.86kB     |        |           |
+| pell          | 1.11kB          | 2.85kB     |        |           |
 | medium-editor | 27kB            | 105kB      |        |           |
 | quill         | 43kB            | 205kB      |        |           |
 | ckeditor      | 163kB           | 551kB      |        |           |
@@ -100,7 +100,7 @@ npm install --save pell
 // ES6
 import pell from 'pell'
 // or
-import { execute, init } from 'pell'
+import { exec, init } from 'pell'
 ```
 
 ```js
@@ -153,7 +153,7 @@ pell.init({
 // Execute a document command, see reference:
 // https://developer.mozilla.org/en/docs/Web/API/Document/execCommand
 // this is just `document.execCommand(command, false, value)`
-pell.execute(command<string>, value<string>)
+pell.exec(command<string>, value<string>)
 ```
 
 #### List of overwriteable action names
@@ -197,7 +197,7 @@ const editor = pell.init({
     'underline',
     {
       name: 'italic',
-      result: () => window.pell.execute('italic')
+      result: () => window.pell.exec('italic')
     },
     {
       name: 'custom',
@@ -209,14 +209,14 @@ const editor = pell.init({
       name: 'image',
       result: () => {
         const url = window.prompt('Enter the image URL')
-        if (url) window.pell.execute('insertImage', ensureHTTP(url))
+        if (url) window.pell.exec('insertImage', ensureHTTP(url))
       }
     },
     {
       name: 'link',
       result: () => {
         const url = window.prompt('Enter the link URL')
-        if (url) window.pell.execute('createLink', ensureHTTP(url))
+        if (url) window.pell.exec('createLink', ensureHTTP(url))
       }
     }
   ],

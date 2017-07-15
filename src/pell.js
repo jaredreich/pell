@@ -2,69 +2,69 @@ const actions = {
   bold: {
     icon: '<b>B</b>',
     title: 'Bold',
-    result: () => execute('bold')
+    result: () => exec('bold')
   },
   italic: {
     icon: '<i>I</i>',
     title: 'Italic',
-    result: () => execute('italic')
+    result: () => exec('italic')
   },
   underline: {
     icon: '<u>U</u>',
     title: 'Underline',
-    result: () => execute('underline')
+    result: () => exec('underline')
   },
   strikethrough: {
     icon: '<strike>S</strike>',
     title: 'Strike-through',
-    result: () => execute('strikeThrough')
+    result: () => exec('strikeThrough')
   },
   heading1: {
     icon: '<b>H<sub>1</sub></b>',
     title: 'Heading 1',
-    result: () => execute('formatBlock', '<H1>')
+    result: () => exec('formatBlock', '<H1>')
   },
   heading2: {
     icon: '<b>H<sub>2</sub></b>',
     title: 'Heading 2',
-    result: () => execute('formatBlock', '<H2>')
+    result: () => exec('formatBlock', '<H2>')
   },
   paragraph: {
     icon: '&#182;',
     title: 'Paragraph',
-    result: () => execute('formatBlock', '<P>')
+    result: () => exec('formatBlock', '<P>')
   },
   quote: {
     icon: '&#8220; &#8221;',
     title: 'Quote',
-    result: () => execute('formatBlock', '<BLOCKQUOTE>')
+    result: () => exec('formatBlock', '<BLOCKQUOTE>')
   },
   olist: {
     icon: '&#35;',
     title: 'Ordered List',
-    result: () => execute('insertOrderedList')
+    result: () => exec('insertOrderedList')
   },
   ulist: {
     icon: '&#8226;',
     title: 'Unordered List',
-    result: () => execute('insertUnorderedList')
+    result: () => exec('insertUnorderedList')
   },
   code: {
     icon: '&lt;/&gt;',
     title: 'Code',
-    result: () => execute('formatBlock', '<PRE>')
+    result: () => exec('formatBlock', '<PRE>')
   },
   line: {
     icon: '&#8213;',
     title: 'Horizontal Line',
-    result: () => execute('insertHorizontalRule')
+    result: () => exec('insertHorizontalRule')
   },
   link: {
     icon: '&#128279;',
     title: 'Link',
     result: () => {
       const url = window.prompt('Enter the link URL')
-      if (url) execute('createLink', url)
+      if (url) exec('createLink', url)
     }
   },
   image: {
@@ -72,7 +72,7 @@ const actions = {
     title: 'Image',
     result: () => {
       const url = window.prompt('Enter the image URL')
-      if (url) execute('insertImage', url)
+      if (url) exec('insertImage', url)
     }
   }
 }
@@ -83,7 +83,7 @@ const classes = {
   content: 'pell-content'
 }
 
-export const execute = (command, value = null) => {
+export const exec = (command, value = null) => {
   document.execCommand(command, false, value)
 }
 
@@ -122,9 +122,9 @@ export const init = settings => {
     actionbar.appendChild(button)
   })
 
-  if (settings.styleWithCSS) execute('styleWithCSS')
+  if (settings.styleWithCSS) exec('styleWithCSS')
 
   return settings.element
 }
 
-export default { execute, init }
+export default { exec, init }

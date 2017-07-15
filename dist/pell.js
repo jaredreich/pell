@@ -11,84 +11,84 @@ var actions = {
     icon: '<b>B</b>',
     title: 'Bold',
     result: function result() {
-      return execute('bold');
+      return exec('bold');
     }
   },
   italic: {
     icon: '<i>I</i>',
     title: 'Italic',
     result: function result() {
-      return execute('italic');
+      return exec('italic');
     }
   },
   underline: {
     icon: '<u>U</u>',
     title: 'Underline',
     result: function result() {
-      return execute('underline');
+      return exec('underline');
     }
   },
   strikethrough: {
     icon: '<strike>S</strike>',
     title: 'Strike-through',
     result: function result() {
-      return execute('strikeThrough');
+      return exec('strikeThrough');
     }
   },
   heading1: {
     icon: '<b>H<sub>1</sub></b>',
     title: 'Heading 1',
     result: function result() {
-      return execute('formatBlock', '<H1>');
+      return exec('formatBlock', '<H1>');
     }
   },
   heading2: {
     icon: '<b>H<sub>2</sub></b>',
     title: 'Heading 2',
     result: function result() {
-      return execute('formatBlock', '<H2>');
+      return exec('formatBlock', '<H2>');
     }
   },
   paragraph: {
     icon: '&#182;',
     title: 'Paragraph',
     result: function result() {
-      return execute('formatBlock', '<P>');
+      return exec('formatBlock', '<P>');
     }
   },
   quote: {
     icon: '&#8220; &#8221;',
     title: 'Quote',
     result: function result() {
-      return execute('formatBlock', '<BLOCKQUOTE>');
+      return exec('formatBlock', '<BLOCKQUOTE>');
     }
   },
   olist: {
     icon: '&#35;',
     title: 'Ordered List',
     result: function result() {
-      return execute('insertOrderedList');
+      return exec('insertOrderedList');
     }
   },
   ulist: {
     icon: '&#8226;',
     title: 'Unordered List',
     result: function result() {
-      return execute('insertUnorderedList');
+      return exec('insertUnorderedList');
     }
   },
   code: {
     icon: '&lt;/&gt;',
     title: 'Code',
     result: function result() {
-      return execute('formatBlock', '<PRE>');
+      return exec('formatBlock', '<PRE>');
     }
   },
   line: {
     icon: '&#8213;',
     title: 'Horizontal Line',
     result: function result() {
-      return execute('insertHorizontalRule');
+      return exec('insertHorizontalRule');
     }
   },
   link: {
@@ -96,7 +96,7 @@ var actions = {
     title: 'Link',
     result: function result() {
       var url = window.prompt('Enter the link URL');
-      if (url) execute('createLink', url);
+      if (url) exec('createLink', url);
     }
   },
   image: {
@@ -104,7 +104,7 @@ var actions = {
     title: 'Image',
     result: function result() {
       var url = window.prompt('Enter the image URL');
-      if (url) execute('insertImage', url);
+      if (url) exec('insertImage', url);
     }
   }
 };
@@ -115,7 +115,7 @@ var classes = {
   content: 'pell-content'
 };
 
-var execute = function execute(command) {
+var exec = function exec(command) {
   var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
   document.execCommand(command, false, value);
@@ -157,14 +157,14 @@ var init = function init(settings) {
     actionbar.appendChild(button);
   });
 
-  if (settings.styleWithCSS) execute('styleWithCSS');
+  if (settings.styleWithCSS) exec('styleWithCSS');
 
   return settings.element;
 };
 
-var pell = { execute: execute, init: init };
+var pell = { exec: exec, init: init };
 
-exports.execute = execute;
+exports.exec = exec;
 exports.init = init;
 exports['default'] = pell;
 
