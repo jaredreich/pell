@@ -6,7 +6,7 @@
 
 Live demo: [https://jaredreich.com/pell](https://jaredreich.com/pell)
 
-![Alt text](/demo.gif?raw=true "Demo")
+[![Live demo](/demo.gif?raw=true "Demo")](https://jaredreich.com/pell)
 
 ## Comparisons
 
