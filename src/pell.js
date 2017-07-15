@@ -125,6 +125,8 @@ export const init = settings => {
   editor.oninput = event => settings.onChange && settings.onChange(event.target.innerHTML)
   settings.root.appendChild(editor)
 
+  if (settings.styleWithCSS) execute('styleWithCSS')
+
   settings.actions.forEach(action => {
     const button = document.createElement('button')
     button.className = settings.classes.button

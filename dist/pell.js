@@ -168,6 +168,8 @@ var init = function init(settings) {
   };
   settings.root.appendChild(editor);
 
+  if (settings.styleWithCSS) execute('styleWithCSS');
+
   settings.actions.forEach(function (action) {
     var button = document.createElement('button');
     button.className = settings.classes.button;
