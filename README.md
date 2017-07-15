@@ -122,21 +122,25 @@ window.pell
 
 ```js
 pell.init({
+  // actions: Array<string | Object>
   actions: [
     'bold',
     { name: 'italic', icon: '&#9786;', title: 'Zitalic' },
     'underline'
   ],
+  // classes: Array<string>
   classes: {
     actionbar: 'pell-actionbar',
     button: 'pell-button',
     editor: 'pell-editor'
   },
+  // onChange: Function
   onChange: html => {
     document.getElementById('text-output').innerHTML = html
     document.getElementById('html-output').textContent = html
   },
-  root: 'pell'
+  // root: HTMLElement
+  root: document.getElementById('pell')
 })
 ```
 

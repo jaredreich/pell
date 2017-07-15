@@ -156,11 +156,9 @@ var init = function init(settings) {
 
   settings.classes = _extends({}, defaultSettings.classes, settings.classes);
 
-  var root = document.getElementById(settings.root);
-
   var actionbar = document.createElement('div');
   actionbar.className = settings.classes.actionbar;
-  root.appendChild(actionbar);
+  settings.root.appendChild(actionbar);
 
   var editor = document.createElement('div');
   editor.contentEditable = true;
@@ -168,7 +166,7 @@ var init = function init(settings) {
   editor.oninput = function (event) {
     return settings.onChange && settings.onChange(event.target.innerHTML);
   };
-  root.appendChild(editor);
+  settings.root.appendChild(editor);
 
   settings.actions.forEach(function (action) {
     var button = document.createElement('button');
