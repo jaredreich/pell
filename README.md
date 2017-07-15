@@ -94,6 +94,8 @@ npm install --save pell
 
 ## Usage
 
+#### API
+
 ```js
 // ES6
 import pell from 'pell'
@@ -111,27 +113,32 @@ window.pell
 ```js
 // Initialize pell on an HTMLElement
 pell.init({
-  // element<HTMLElement> (required)
+  // <HTMLElement>, required
   element: document.getElementById('some-id'),
 
-  // onChange<Function> (required)
+  // <Function>, required
   // Use the output html, triggered by element's `oninput` event
   onChange: html => console.log(html),
 
-  // styleWithCSS<boolean> (optional)
+  // <boolean>, optional, default = false
   // Outputs <span style="font-weight: bold;"></span> instead of <b></b>
-  // default: false
   styleWithCSS: false,
 
-  // actions<Array[string | Object]> (optional)
-  // Specify the actions you specifically want (in order), and edit them
+  // <Array[string | Object]>, string if overwriting, object if customizing/creating
+  // action.name<string> (only required if overwriting)
+  // action.icon<string> (optional if overwriting, required if custom action)
+  // action.title<string> (optional)
+  // action.result<Function> (required)
+  // Specify the actions you specifically want (in order)
   actions: [
+    'bold',
     {
-      name: 'bold',
-      icon: 'BB',
-      title: 'BBold',
-      result: () => pell.execute('bold')
-    }
+      name: 'custom',
+      icon: 'C',
+      title: 'Custom Action',
+      result: () => console.log('YOLO')
+    },
+    'underline'
   ],
 
   // classes<Array[string]> (optional)
@@ -149,7 +156,23 @@ pell.init({
 pell.execute(command<string>, value<string>)
 ```
 
-#### Example:
+#### List of overwriteable action names
+- bold
+- italic
+- underline
+- strikethrough
+- heading1
+- heading2
+- paragraph
+- quote
+- olist
+- ulist
+- code
+- line
+- link
+- image
+
+#### Example
 
 ```html
 <div id="pell"></div>
@@ -177,10 +200,10 @@ const editor = pell.init({
       result: () => window.pell.execute('italic')
     },
     {
-      name: 'zitalic',
-      icon: '<u>Z</u>',
-      title: 'Zitalic',
-      result: () => window.pell.execute('italic')
+      name: 'custom',
+      icon: '<b><u><i>C</i></u></b>',
+      title: 'Custom Action',
+      result: () => console.log('YOLO')
     },
     {
       name: 'image',
@@ -211,7 +234,7 @@ editor.content.innerHTML = '<b><u><i>Initial content!</i></u></b>'
 
 ## Custom Styles
 
-#### SCSS:
+#### SCSS
 
 ```scss
 $pell-content-height: 400px;
@@ -221,7 +244,7 @@ $pell-content-height: 400px;
 @import '../../node_modules/pell/src/pell';
 ```
 
-#### CSS:
+#### CSS
 
 ```css
 /* After pell styles are applied to DOM: */
