@@ -100,7 +100,7 @@ npm install --save pell
 // ES6
 import pell from 'pell'
 // or
-import { init } from 'pell'
+import { execute, init } from 'pell'
 ```
 
 ```js
