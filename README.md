@@ -6,13 +6,13 @@
 
 Live demo: [https://jaredreich.com/pell](https://jaredreich.com/pell)
 
-![Alt text](/demo.gif?raw=true "Demo")
+[![Live demo](/demo.gif?raw=true "Demo")](https://jaredreich.com/pell)
 
 ## Comparisons
 
 | library       | size (min+gzip) | size (min) | jquery | bootstrap |
 |---------------|-----------------|------------|--------|-----------|
-| pell          | 1.14kB          | 2.89kB     |        |           |
+| pell          | 1.11kB          | 2.86kB     |        |           |
 | medium-editor | 27kB            | 105kB      |        |           |
 | quill         | 43kB            | 205kB      |        |           |
 | ckeditor      | 163kB           | 551kB      |        |           |
@@ -108,6 +108,47 @@ pell
 window.pell
 ```
 
+```js
+// Initialize pell on an HTMLElement
+pell.init({
+  // element<HTMLElement> (required)
+  element: document.getElementById('some-id'),
+
+  // onChange<Function> (required)
+  // Use the output html, triggered by element's `oninput` event
+  onChange: html => console.log(html),
+
+  // styleWithCSS<boolean> (optional)
+  // Outputs <span style="font-weight: bold;"></span> instead of <b></b>
+  // default: false
+  styleWithCSS: false,
+
+  // actions<Array[string | Object]> (optional)
+  // Specify the actions you specifically want (in order), and edit them
+  actions: [
+    {
+      name: 'bold',
+      icon: 'BB',
+      title: 'BBold',
+      result: () => pell.execute('bold')
+    }
+  ],
+
+  // classes<Array[string]> (optional)
+  // Choose your custom class names
+  classes: {
+    actionbar: 'pell-actionbar',
+    button: 'pell-button',
+    content: 'pell-content'
+  }
+})
+
+// Execute a document command, see reference:
+// https://developer.mozilla.org/en/docs/Web/API/Document/execCommand
+// this is just `document.execCommand(command, false, value)`
+pell.execute(command<string>, value<string>)
+```
+
 #### Example:
 
 ```html
@@ -122,38 +163,48 @@ window.pell
 
 ```js
 const editor = pell.init({
-  // element: HTMLElement (required)
   element: document.getElementById('pell'),
-
-  // onChange: Function (required)
-  // Use the output html, triggered by element's `oninput` event
   onChange: html => {
     document.getElementById('text-output').innerHTML = html
     document.getElementById('html-output').textContent = html
   },
-
-  // styleWithCSS: boolean (optional)
-  // Outputs <span style="font-weight: bold;"></span> instead of <b></b>
   styleWithCSS: true,
-
-  // actions: Array<string | Object> (optional)
-  // Pluck the actions you specifically want, and edit them
   actions: [
     'bold',
-    { name: 'italic', icon: '&#9786;', title: 'Zitalic' },
-    'underline'
+    'underline',
+    {
+      name: 'italic',
+      result: () => window.pell.execute('italic')
+    },
+    {
+      name: 'zitalic',
+      icon: '<u>Z</u>',
+      title: 'Zitalic',
+      result: () => window.pell.execute('italic')
+    },
+    {
+      name: 'image',
+      result: () => {
+        const url = window.prompt('Enter the image URL')
+        if (url) window.pell.execute('insertImage', ensureHTTP(url))
+      }
+    },
+    {
+      name: 'link',
+      result: () => {
+        const url = window.prompt('Enter the link URL')
+        if (url) window.pell.execute('createLink', ensureHTTP(url))
+      }
+    }
   ],
-
-  // classes: Array<string> (optional)
-  // Choose your custom class names
   classes: {
-    actionbar: 'pell-actionbar',
-    button: 'pell-button',
-    content: 'pell-content'
+    actionbar: 'pell-actionbar-custom-name',
+    button: 'pell-button-custom-name',
+    content: 'pell-content-custom-name'
   }
 })
 
-// editor.content: HTMLElement
+// editor.content<HTMLElement>
 // To change the editor's content:
 editor.content.innerHTML = '<b><u><i>Initial content!</i></u></b>'
 ```

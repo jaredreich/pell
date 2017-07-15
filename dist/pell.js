@@ -6,16 +6,6 @@
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var link = function link() {
-  var url = window.prompt('Enter the link URL');
-  if (url) execute('createLink', ensureHTTP(url));
-};
-
-var image = function image() {
-  var url = window.prompt('Enter the image URL');
-  if (url) execute('insertImage', ensureHTTP(url));
-};
-
 var actions = {
   bold: {
     icon: '<b>B</b>',
@@ -104,12 +94,18 @@ var actions = {
   link: {
     icon: '&#128279;',
     title: 'Link',
-    result: link
+    result: function result() {
+      var url = window.prompt('Enter the link URL');
+      if (url) execute('createLink', url);
+    }
   },
   image: {
     icon: '&#128247;',
     title: 'Image',
-    result: image
+    result: function result() {
+      var url = window.prompt('Enter the image URL');
+      if (url) execute('insertImage', url);
+    }
   }
 };
 
@@ -125,19 +121,14 @@ var execute = function execute(command) {
   document.execCommand(command, false, value);
 };
 
-var ensureHTTP = function ensureHTTP(str) {
-  return (/^https?:\/\//.test(str) && str || 'http://' + str
-  );
-};
-
 var preventTab = function preventTab(event) {
-  event.which === 9 ? event.preventDefault() : null;
+  if (event.which === 9) event.preventDefault();
 };
 
 var init = function init(settings) {
   settings.actions = settings.actions ? settings.actions.map(function (action) {
-    if (typeof action === 'string') return actions[action];
-    return _extends({}, actions[action.name], action);
+    if (typeof action === 'string') return actions[action];else if (actions[action.name]) return _extends({}, actions[action.name], action);
+    return action;
   }) : Object.keys(actions).map(function (action) {
     return actions[action];
   });
@@ -157,8 +148,6 @@ var init = function init(settings) {
   settings.element.content.onkeydown = preventTab;
   settings.element.appendChild(settings.element.content);
 
-  if (settings.styleWithCSS) execute('styleWithCSS');
-
   settings.actions.forEach(function (action) {
     var button = document.createElement('button');
     button.className = settings.classes.button;
@@ -168,11 +157,14 @@ var init = function init(settings) {
     actionbar.appendChild(button);
   });
 
+  if (settings.styleWithCSS) execute('styleWithCSS');
+
   return settings.element;
 };
 
-var pell = { init: init };
+var pell = { execute: execute, init: init };
 
+exports.execute = execute;
 exports.init = init;
 exports['default'] = pell;
 

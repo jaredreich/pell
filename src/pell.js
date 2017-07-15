@@ -1,13 +1,3 @@
-const link = () => {
-  const url = window.prompt('Enter the link URL')
-  if (url) execute('createLink', ensureHTTP(url))
-}
-
-const image = () => {
-  const url = window.prompt('Enter the image URL')
-  if (url) execute('insertImage', ensureHTTP(url))
-}
-
 const actions = {
   bold: {
     icon: '<b>B</b>',
@@ -72,12 +62,18 @@ const actions = {
   link: {
     icon: '&#128279;',
     title: 'Link',
-    result: link
+    result: () => {
+      const url = window.prompt('Enter the link URL')
+      if (url) execute('createLink', url)
+    }
   },
   image: {
     icon: '&#128247;',
     title: 'Image',
-    result: image
+    result: () => {
+      const url = window.prompt('Enter the image URL')
+      if (url) execute('insertImage', url)
+    }
   }
 }
 
@@ -87,19 +83,20 @@ const classes = {
   content: 'pell-content'
 }
 
-const execute = (command, value = null) => {
+export const execute = (command, value = null) => {
   document.execCommand(command, false, value)
 }
 
-const ensureHTTP = str => /^https?:\/\//.test(str) && str || `http://${str}`
-
-const preventTab = event => { event.which === 9 ? event.preventDefault() : null }
+const preventTab = event => {
+  if (event.which === 9) event.preventDefault()
+}
 
 export const init = settings => {
   settings.actions = settings.actions
     ? settings.actions.map(action => {
       if (typeof action === 'string') return actions[action]
-      return { ...actions[action.name], ...action }
+      else if (actions[action.name]) return { ...actions[action.name], ...action }
+      return action
     })
     : Object.keys(actions).map(action => actions[action])
 
@@ -116,8 +113,6 @@ export const init = settings => {
   settings.element.content.onkeydown = preventTab
   settings.element.appendChild(settings.element.content)
 
-  if (settings.styleWithCSS) execute('styleWithCSS')
-
   settings.actions.forEach(action => {
     const button = document.createElement('button')
     button.className = settings.classes.button
@@ -127,7 +122,9 @@ export const init = settings => {
     actionbar.appendChild(button)
   })
 
+  if (settings.styleWithCSS) execute('styleWithCSS')
+
   return settings.element
 }
 
-export default { init }
+export default { execute, init }
