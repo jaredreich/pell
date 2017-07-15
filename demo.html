@@ -44,26 +44,16 @@
 
     <script src="dist/pell.js"></script>
     <script>
-      window.pell.init({
-        /*
-        actions: [
-          'bold',
-          { name: 'italic', icon: '&#9786;', title: 'Zitalic' },
-          'underline'
-        ],
-        classes: {
-          actionbar: 'pell-actionbar',
-          button: 'pell-button',
-          editor: 'pell-editor'
-        },
-        */
+      var editor = window.pell.init({
+        element: document.getElementById('pell'),
+        styleWithCSS: true,
         onChange: html => {
           document.getElementById('text-output').innerHTML = html
           document.getElementById('html-output').textContent = html
-        },
-        root: document.getElementById('pell'),
-        styleWithCSS: true
+        }
       })
+
+      editor.content.innerHTML = '<b><u><i>Initial content!</i></u></b>'
     </script>
 
   </body>

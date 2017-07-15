@@ -10,7 +10,7 @@ var defaultSettings = {
   classes: {
     actionbar: 'pell-actionbar',
     button: 'pell-button',
-    editor: 'pell-editor'
+    content: 'pell-content'
   }
 };
 
@@ -158,15 +158,15 @@ var init = function init(settings) {
 
   var actionbar = document.createElement('div');
   actionbar.className = settings.classes.actionbar;
-  settings.root.appendChild(actionbar);
+  settings.element.appendChild(actionbar);
 
-  var editor = document.createElement('div');
-  editor.contentEditable = true;
-  editor.className = settings.classes.editor;
-  editor.oninput = function (event) {
-    return settings.onChange && settings.onChange(event.target.innerHTML);
+  settings.element.content = document.createElement('div');
+  settings.element.content.contentEditable = true;
+  settings.element.content.className = settings.classes.content;
+  settings.element.content.oninput = function (event) {
+    return settings.onChange(event.target.innerHTML);
   };
-  settings.root.appendChild(editor);
+  settings.element.appendChild(settings.element.content);
 
   if (settings.styleWithCSS) execute('styleWithCSS');
 
@@ -178,6 +178,8 @@ var init = function init(settings) {
     button.onclick = action.result;
     actionbar.appendChild(button);
   });
+
+  return settings.element;
 };
 
 var pell = { init: init };

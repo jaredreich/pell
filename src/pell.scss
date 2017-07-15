@@ -6,8 +6,8 @@ $pell-border-width: 1px !default;
 $pell-box-shadow: 0 2px 3px $pell-border-color, 0 0 0 1px $pell-border-color !default;
 $pell-button-height: 30px !default;
 $pell-button-width: 30px !default;
-$pell-editor-height: 300px !default;
-$pell-editor-padding: 10px !default;
+$pell-content-height: 300px !default;
+$pell-content-padding: 10px !default;
 
 .pell {
   border-radius: $pell-border-radius;
@@ -16,12 +16,12 @@ $pell-editor-padding: 10px !default;
   width: 100%;
 }
 
-.pell-editor {
+.pell-content {
   box-sizing: border-box;
-  height: $pell-editor-height;
+  height: $pell-content-height;
   outline: 0;
   overflow-y: auto;
-  padding: $pell-editor-padding;
+  padding: $pell-content-padding;
   width: 100%;
 }
 

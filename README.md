@@ -12,7 +12,7 @@ Live demo: [https://jaredreich.com/pell](https://jaredreich.com/pell)
 
 | library       | size (min+gzip) | size (min) | jquery | bootstrap |
 |---------------|-----------------|------------|--------|-----------|
-| pell          | 1.1kB           | 2.9kB      |        |           |
+| pell          | 1.14kB          | 2.98kB     |        |           |
 | medium-editor | 27kB            | 105kB      |        |           |
 | quill         | 43kB            | 205kB      |        |           |
 | ckeditor      | 163kB           | 551kB      |        |           |
@@ -80,7 +80,7 @@ npm install --save pell
   <link rel="stylesheet" type="text/css" href="https://unpkg.com/pell/dist/pell.min.css">
   <style>
     /* override styles here */
-    .pell-editor {
+    .pell-content {
       background-color: pink;
     }
   </style>
@@ -121,27 +121,41 @@ window.pell
 ```
 
 ```js
-pell.init({
-  // actions: Array<string | Object>
+const editor = pell.init({
+  // element: HTMLElement (required)
+  element: document.getElementById('pell'),
+
+  // onChange: Function (required)
+  // Use the output html, triggered by element's `oninput` event
+  onChange: html => {
+    document.getElementById('text-output').innerHTML = html
+    document.getElementById('html-output').textContent = html
+  },
+
+  // styleWithCSS: boolean (optional)
+  // Outputs <span style="font-weight: bold;"></span> instead of <b></b>
+  styleWithCSS: true,
+
+  // actions: Array<string | Object> (optional)
+  // Pluck the actions you specifically want, and edit them
   actions: [
     'bold',
     { name: 'italic', icon: '&#9786;', title: 'Zitalic' },
     'underline'
   ],
-  // classes: Array<string>
+
+  // classes: Array<string> (optional)
+  // Choose your custom class names
   classes: {
     actionbar: 'pell-actionbar',
     button: 'pell-button',
-    editor: 'pell-editor'
-  },
-  // onChange: Function
-  onChange: html => {
-    document.getElementById('text-output').innerHTML = html
-    document.getElementById('html-output').textContent = html
-  },
-  // root: HTMLElement
-  root: document.getElementById('pell')
+    content: 'pell-content'
+  }
 })
+
+// editor.content: HTMLElement
+// To change the editor's content:
+editor.content.innerHTML = '<b><u><i>Initial content!</i></u></b>'
 ```
 
 ## Custom Styles
@@ -149,7 +163,7 @@ pell.init({
 #### SCSS:
 
 ```scss
-$pell-editor-height: 400px;
+$pell-content-height: 400px;
 // See all overwriteable variables in src/pell.scss
 
 // Then import pell.scss into styles:
@@ -160,7 +174,7 @@ $pell-editor-height: 400px;
 
 ```css
 /* After pell styles are applied to DOM: */
-.pell-editor {
+.pell-content {
   height: 400px;
 }
 ```
