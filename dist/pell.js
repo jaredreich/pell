@@ -110,20 +110,6 @@ var actions = {
     icon: '&#128247;',
     title: 'Image',
     result: image
-  },
-  undo: {
-    icon: '&#8634;',
-    title: 'Undo',
-    result: function result() {
-      return execute('undo');
-    }
-  },
-  redo: {
-    icon: '&#8635;',
-    title: 'Redo',
-    result: function result() {
-      return execute('redo');
-    }
   }
 };
 

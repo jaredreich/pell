@@ -40,8 +40,6 @@ Current actions:
 - Horizontal Rule
 - Link
 - Image
-- Undo
-- Redo
 
 Other possible future actions:
 - Justify Center
@@ -55,6 +53,8 @@ Other possible future actions:
 - Indent
 - Outdent
 - Clear Formatting
+- Undo
+- Redo
 
 ## Browser Support
 

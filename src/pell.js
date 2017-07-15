@@ -78,16 +78,6 @@ const actions = {
     icon: '&#128247;',
     title: 'Image',
     result: image
-  },
-  undo: {
-    icon: '&#8634;',
-    title: 'Undo',
-    result: () => execute('undo')
-  },
-  redo: {
-    icon: '&#8635;',
-    title: 'Redo',
-    result: () => execute('redo')
   }
 }
 
