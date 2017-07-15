@@ -6,25 +6,6 @@
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var defaultSettings = {
-  classes: {
-    actionbar: 'pell-actionbar',
-    button: 'pell-button',
-    content: 'pell-content'
-  }
-};
-
-var execute = function execute(command) {
-  var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-  document.execCommand(command, false, value);
-};
-
-var ensureHTTP = function ensureHTTP(str) {
-  return (/^https?:\/\//.test(str) && str || 'http://' + str
-  );
-};
-
 var link = function link() {
   var url = window.prompt('Enter the link URL');
   if (url) execute('createLink', ensureHTTP(url));
@@ -117,7 +98,7 @@ var actions = {
     icon: '&#8213;',
     title: 'Horizontal Line',
     result: function result() {
-      return execute('insertHorizontalRule', '<PRE>');
+      return execute('insertHorizontalRule');
     }
   },
   link: {
@@ -146,6 +127,27 @@ var actions = {
   }
 };
 
+var classes = {
+  actionbar: 'pell-actionbar',
+  button: 'pell-button',
+  content: 'pell-content'
+};
+
+var execute = function execute(command) {
+  var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+  document.execCommand(command, false, value);
+};
+
+var ensureHTTP = function ensureHTTP(str) {
+  return (/^https?:\/\//.test(str) && str || 'http://' + str
+  );
+};
+
+var preventTab = function preventTab(event) {
+  event.which === 9 ? event.preventDefault() : null;
+};
+
 var init = function init(settings) {
   settings.actions = settings.actions ? settings.actions.map(function (action) {
     if (typeof action === 'string') return actions[action];
@@ -154,7 +156,7 @@ var init = function init(settings) {
     return actions[action];
   });
 
-  settings.classes = _extends({}, defaultSettings.classes, settings.classes);
+  settings.classes = _extends({}, classes, settings.classes);
 
   var actionbar = document.createElement('div');
   actionbar.className = settings.classes.actionbar;
@@ -166,6 +168,7 @@ var init = function init(settings) {
   settings.element.content.oninput = function (event) {
     return settings.onChange(event.target.innerHTML);
   };
+  settings.element.content.onkeydown = preventTab;
   settings.element.appendChild(settings.element.content);
 
   if (settings.styleWithCSS) execute('styleWithCSS');

@@ -1,17 +1,3 @@
-const defaultSettings = {
-  classes: {
-    actionbar: 'pell-actionbar',
-    button: 'pell-button',
-    content: 'pell-content'
-  }
-}
-
-const execute = (command, value = null) => {
-  document.execCommand(command, false, value)
-}
-
-const ensureHTTP = str => /^https?:\/\//.test(str) && str || `http://${str}`
-
 const link = () => {
   const url = window.prompt('Enter the link URL')
   if (url) execute('createLink', ensureHTTP(url))
@@ -81,7 +67,7 @@ const actions = {
   line: {
     icon: '&#8213;',
     title: 'Horizontal Line',
-    result: () => execute('insertHorizontalRule', '<PRE>')
+    result: () => execute('insertHorizontalRule')
   },
   link: {
     icon: '&#128279;',
@@ -105,6 +91,20 @@ const actions = {
   }
 }
 
+const classes = {
+  actionbar: 'pell-actionbar',
+  button: 'pell-button',
+  content: 'pell-content'
+}
+
+const execute = (command, value = null) => {
+  document.execCommand(command, false, value)
+}
+
+const ensureHTTP = str => /^https?:\/\//.test(str) && str || `http://${str}`
+
+const preventTab = event => { event.which === 9 ? event.preventDefault() : null }
+
 export const init = settings => {
   settings.actions = settings.actions
     ? settings.actions.map(action => {
@@ -113,7 +113,7 @@ export const init = settings => {
     })
     : Object.keys(actions).map(action => actions[action])
 
-  settings.classes = { ...defaultSettings.classes, ...settings.classes }
+  settings.classes = { ...classes, ...settings.classes }
 
   const actionbar = document.createElement('div')
   actionbar.className = settings.classes.actionbar
@@ -123,6 +123,7 @@ export const init = settings => {
   settings.element.content.contentEditable = true
   settings.element.content.className = settings.classes.content
   settings.element.content.oninput = event => settings.onChange(event.target.innerHTML)
+  settings.element.content.onkeydown = preventTab
   settings.element.appendChild(settings.element.content)
 
   if (settings.styleWithCSS) execute('styleWithCSS')

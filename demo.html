@@ -46,14 +46,12 @@
     <script>
       var editor = window.pell.init({
         element: document.getElementById('pell'),
-        styleWithCSS: true,
-        onChange: html => {
+        styleWithCSS: false,
+        onChange: function (html) {
           document.getElementById('text-output').innerHTML = html
           document.getElementById('html-output').textContent = html
         }
       })
-
-      editor.content.innerHTML = '<b><u><i>Initial content!</i></u></b>'
     </script>
 
   </body>
