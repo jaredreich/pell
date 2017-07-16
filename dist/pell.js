@@ -142,8 +142,12 @@ var actions = {
     title: 'Redo',
     result: function result() {
       return execute('redo');
-    }
-  }
+	  }
+	},
+	count: {
+		icon: '0',
+    title: 'Characters',
+	}
 };
 
 var init = function init(settings) {
@@ -166,6 +170,7 @@ var init = function init(settings) {
   editor.contentEditable = true;
   editor.className = settings.classes.editor;
   editor.oninput = function (event) {
+		if (counter) {counter.textContent = event.target.innerText.length;};
     return settings.onChange && settings.onChange(event.target.innerHTML);
   };
   root.appendChild(editor);
@@ -178,6 +183,8 @@ var init = function init(settings) {
     button.onclick = action.result;
     actionbar.appendChild(button);
   });
+
+	var counter = actionbar.querySelector('[title="Characters"]');
 };
 
 var pell = { init: init };
