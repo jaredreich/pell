@@ -148,7 +148,7 @@ var init = function init(settings) {
   settings.element.content.onkeydown = preventTab;
   settings.element.content.onblur = function (event) {
     return settings.onBlur();
-  }
+  };
   settings.element.appendChild(settings.element.content);
 
   settings.actions.forEach(function (action) {
