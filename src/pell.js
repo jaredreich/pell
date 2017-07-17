@@ -111,6 +111,7 @@ export const init = settings => {
   settings.element.content.className = settings.classes.content
   settings.element.content.oninput = event => settings.onChange(event.target.innerHTML)
   settings.element.content.onkeydown = preventTab
+  settings.element.content.onblur = event => settings.onBlur()
   settings.element.appendChild(settings.element.content)
 
   settings.actions.forEach(action => {
