@@ -44,24 +44,42 @@
 
     <script src="dist/pell.js"></script>
     <script>
-      window.pell.init({
-        /*
+      function ensureHTTP (str) {
+        return /^https?:\/\//.test(str) && str || `http://${str}`
+      }
+
+      var editor = window.pell.init({
+        element: document.getElementById('pell'),
+        styleWithCSS: false,
         actions: [
           'bold',
-          { name: 'italic', icon: '&#9786;', title: 'Zitalic' },
-          'underline'
+          'underline',
+          'italic',
+          {
+            name: 'zitalic',
+            icon: 'Z',
+            title: 'Zitalic',
+            result: () => window.pell.exec('italic')
+          },
+          {
+            name: 'image',
+            result: () => {
+              const url = window.prompt('Enter the image URL')
+              if (url) window.pell.exec('insertImage', ensureHTTP(url))
+            }
+          },
+          {
+            name: 'link',
+            result: () => {
+              const url = window.prompt('Enter the link URL')
+              if (url) window.pell.exec('createLink', ensureHTTP(url))
+            }
+          }
         ],
-        classes: {
-          actionbar: 'pell-actionbar',
-          button: 'pell-button',
-          editor: 'pell-editor'
-        },
-        */
-        onChange: html => {
+        onChange: function (html) {
           document.getElementById('text-output').innerHTML = html
           document.getElementById('html-output').textContent = html
-        },
-        root: 'pell'
+        }
       })
     </script>
 
