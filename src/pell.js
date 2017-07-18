@@ -25,8 +25,7 @@ const image = () => {
 const video = () => {
   const url = window.prompt('Enter the video URL')
   const type = window.prompt('Enter the video type')
-  if (url) execute('insertHTML', '<video width="400" controls>' + 
-    `<source src="ensureHTTP(url)" type="video/${type}">` +
+  if (url) execute('insertHTML', `<video src="ensureHTTP(url)" width="400" controls>` + 
     'Your browser does not support HTML5 video.' +
     '</video>')
 }
