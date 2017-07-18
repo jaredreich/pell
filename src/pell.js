@@ -74,6 +74,16 @@ const actions = {
       const url = window.prompt('Enter the image URL')
       if (url) exec('insertImage', url)
     }
+  },
+  undo: {
+    icon: '&#8634;',
+    title: 'Undo',
+    result: () => exec('undo') 
+  },
+  redo: {
+    icon: '&#8635;',
+    title: 'Redo',
+    result: () => exec('redo') 
   }
 }
 

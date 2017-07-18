@@ -106,6 +106,20 @@ var actions = {
       var url = window.prompt('Enter the image URL');
       if (url) exec('insertImage', url);
     }
+  },
+  undo: {
+    icon: '&#8634;',
+    title: 'Undo',
+    result: function result() {
+      return exec('undo');
+    }
+  },
+  redo: {
+    icon: '&#8635;',
+    title: 'Redo',
+    result: function result() {
+      return exec('redo');
+    }
   }
 };
 
