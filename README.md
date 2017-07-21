@@ -1,6 +1,7 @@
 <img src="./logo.png" width="256" alt="Logo">
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+[![CDNJS](https://img.shields.io/cdnjs/v/pell.svg)](https://cdnjs.com/libraries/pell)
 
 > pell is the simplest and smallest WYSIWYG text editor for web, with no dependencies
 
