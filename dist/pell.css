@@ -26,3 +26,20 @@
   height: 30px;
   outline: 0;
   width: 30px; }
+
+
+body {
+        margin: 0;
+        padding: 0;
+      }
+
+      .content {
+        box-sizing: border-box;
+        margin: 0 auto;
+        max-width: 600px;
+        padding: 20px;
+      }
+
+      #html-output {
+        white-space: pre-wrap;
+      }

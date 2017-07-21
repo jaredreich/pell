@@ -8,24 +8,6 @@
 
     <link rel="stylesheet" type="text/css" href="dist/pell.css">
 
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-      }
-
-      .content {
-        box-sizing: border-box;
-        margin: 0 auto;
-        max-width: 600px;
-        padding: 20px;
-      }
-
-      #html-output {
-        white-space: pre-wrap;
-      }
-    </style>
-
   </head>
   <body>
 
@@ -33,6 +15,7 @@
       <h1>pell</h1>
       <div id="pell" class="pell"></div>
       <div style="margin-top:20px;">
+        <input type="file" name="picture"></input>
         <h3>Text output:</h3>
         <div id="text-output"></div>
       </div>
@@ -41,6 +24,7 @@
         <pre id="html-output"></pre>
       </div>
     </div>
+
 
     <script src="dist/pell.js"></script>
     <script>
