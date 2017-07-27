@@ -49,6 +49,14 @@ var actions = {
       return exec('formatBlock', '<H2>');
     }
   },
+  font: {
+    icon: '<b>F</b>',
+    title: 'Font',
+    result: function result() {
+      var family = window.prompt('Enter font name');
+      if (family) exec('fontName', family);
+    }
+  },
   paragraph: {
     icon: '&#182;',
     title: 'Paragraph',
