@@ -74,6 +74,14 @@ const actions = {
       const url = window.prompt('Enter the image URL')
       if (url) exec('insertImage', url)
     }
+  },
+  color: {
+    icon: '&#127912;',
+    title: 'Color',
+    result: function result() {
+      var color = window.prompt('Enter the color (i.e. red or #2ecc71)');
+      if (color) exec('foreColor', color);
+    }
   }
 }
 
