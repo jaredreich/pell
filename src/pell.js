@@ -79,10 +79,10 @@ const actions = {
     icon: 'CP',
     title: 'copy',
     result: () => {
-      let pellContent = document.getElementsByClassName('pell-content')[0];
+      const pellContent = document.getElementsByClassName('pell-content')[0]
       pellContent.focus()
       document.execCommand('selectAll')
-      document.execCommand('copy', true);
+      document.execCommand('copy', true)
     }
   }
 }
