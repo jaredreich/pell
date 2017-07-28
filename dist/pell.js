@@ -106,6 +106,16 @@ var actions = {
       var url = window.prompt('Enter the image URL');
       if (url) exec('insertImage', url);
     }
+  },
+  copy: {
+    icon: 'CP',
+    title: 'copy',
+    result: function result() {
+      var pellContent = document.getElementsByClassName('pell-content')[0];
+      pellContent.focus();
+      document.execCommand('selectAll');
+      document.execCommand('copy', true);
+    }
   }
 };
 

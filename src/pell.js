@@ -74,6 +74,16 @@ const actions = {
       const url = window.prompt('Enter the image URL')
       if (url) exec('insertImage', url)
     }
+  },
+  copy: {
+    icon: 'CP',
+    title: 'copy',
+    result: () => {
+      let pellContent = document.getElementsByClassName('pell-content')[0];
+      pellContent.focus()
+      document.execCommand('selectAll')
+      document.execCommand('copy', true);
+    }
   }
 }
 
