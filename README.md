@@ -54,8 +54,6 @@ Other possible future actions:
 - Indent
 - Outdent
 - Clear Formatting
-- Undo
-- Redo
 
 ## Browser Support
 
