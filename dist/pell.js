@@ -154,6 +154,12 @@ var init = function init(settings) {
     button.innerHTML = action.icon;
     button.title = action.title;
     button.onclick = action.result;
+	button.addEventListener("mouseover",function(){
+		this.style.color="#66B3FF";
+	});
+	button.addEventListener("mouseout",function(){
+		this.style.color="black";
+	});
     actionbar.appendChild(button);
   });
 
