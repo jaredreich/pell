@@ -13,7 +13,6 @@ $pell-content-padding: 10px !default;
   border-radius: $pell-border-radius;
   box-shadow: $pell-box-shadow;
   box-sizing: border-box;
-  width: 100%;
 }
 
 .pell-content {
@@ -22,7 +21,6 @@ $pell-content-padding: 10px !default;
   outline: 0;
   overflow-y: auto;
   padding: $pell-content-padding;
-  width: 100%;
 }
 
 .pell-actionbar {
@@ -30,7 +28,6 @@ $pell-content-padding: 10px !default;
   border-bottom: $pell-border-width $pell-border-style $pell-border-color;
   border-top-left-radius: $pell-border-radius;
   border-top-right-radius: $pell-border-radius;
-  width: 100%;
 }
 
 .pell-button {
