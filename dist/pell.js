@@ -154,6 +154,7 @@ var init = function init(settings) {
     button.innerHTML = action.icon;
     button.title = action.title;
     button.onclick = action.result;
+    button.setAttribute('type', 'button');
     actionbar.appendChild(button);
   });
 
