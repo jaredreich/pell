@@ -118,7 +118,7 @@ export const init = settings => {
     button.className = settings.classes.button
     button.innerHTML = action.icon
     button.title = action.title
-    button.onclick = action.result
+    button.onclick = event => action.result() || editor.focus()
     actionbar.appendChild(button)
   })
 
