@@ -36,8 +36,13 @@ $pell-content-padding: 10px !default;
 .pell-button {
   background-color: transparent;
   border: none;
+  border-radius: 5px;
   cursor: pointer;
   height: $pell-button-height;
   outline: 0;
   width: $pell-button-width;
+}
+
+.pell-button-selected {
+  background-color: lightgray;
 }

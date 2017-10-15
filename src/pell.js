@@ -2,21 +2,25 @@ const actions = {
   bold: {
     icon: '<b>B</b>',
     title: 'Bold',
+    state: () => commandState('bold'),
     result: () => exec('bold')
   },
   italic: {
     icon: '<i>I</i>',
     title: 'Italic',
+    state: () => commandState('italic'),
     result: () => exec('italic')
   },
   underline: {
     icon: '<u>U</u>',
     title: 'Underline',
+    state: () => commandState('underline'),
     result: () => exec('underline')
   },
   strikethrough: {
     icon: '<strike>S</strike>',
     title: 'Strike-through',
+    state: () => commandState('strikeThrough'),
     result: () => exec('strikeThrough')
   },
   heading1: {
@@ -80,12 +84,15 @@ const actions = {
 const classes = {
   actionbar: 'pell-actionbar',
   button: 'pell-button',
+  selected: 'pell-button-selected',
   content: 'pell-content'
 }
 
 export const exec = (command, value = null) => {
   document.execCommand(command, false, value)
 }
+
+const commandState = command => document.queryCommandState(command)
 
 const preventTab = event => {
   if (event.which === 9) event.preventDefault()
@@ -119,6 +126,18 @@ export const init = settings => {
     button.innerHTML = action.icon
     button.title = action.title
     button.onclick = action.result
+    if (action.state) {
+      const handler = () => {
+        if (action.state()) {
+          button.classList.add(settings.classes.selected)
+        } else {
+          button.classList.remove(settings.classes.selected)
+        }
+      }
+      settings.element.content.addEventListener('keyup', handler)
+      settings.element.content.addEventListener('mouseup', handler)
+      button.addEventListener('click', handler)
+    }
     actionbar.appendChild(button)
   })
 
