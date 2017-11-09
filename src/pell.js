@@ -118,6 +118,7 @@ export const init = settings => {
     button.className = settings.classes.button
     button.innerHTML = action.icon
     button.title = action.title
+    button.type = 'button'
     button.onclick = action.result
     actionbar.appendChild(button)
   })
