@@ -29,6 +29,16 @@ const actions = {
     title: 'Heading 2',
     result: () => exec('formatBlock', '<H2>')
   },
+  superscript: {
+    icon: 'x<sup>2</sup>',
+    title: 'Superscript',
+    result: () => exec('superscript')
+  },
+  subscript: {
+    icon: 'x<sub>2</sub>',
+    title: 'Subscript',
+    result: () => exec('subscript')
+  },
   paragraph: {
     icon: '&#182;',
     title: 'Paragraph',
