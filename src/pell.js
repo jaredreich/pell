@@ -104,15 +104,6 @@ export const init = settings => {
 
   const actionbar = document.createElement('div')
   actionbar.className = settings.classes.actionbar
-  settings.actions.forEach(action => {
-    const button = document.createElement('button')
-    button.className = settings.classes.button
-    button.innerHTML = action.icon
-    button.title = action.title
-    button.setAttribute('type', 'button')
-    button.onclick = action.result
-    actionbar.appendChild(button)
-  })
   settings.element.appendChild(actionbar)
 
   settings.element.content = document.createElement('div')
@@ -121,6 +112,16 @@ export const init = settings => {
   settings.element.content.oninput = event => settings.onChange(event.target.innerHTML)
   settings.element.content.onkeydown = preventTab
   settings.element.appendChild(settings.element.content)
+
+  settings.actions.forEach(action => {
+    const button = document.createElement('button')
+    button.className = settings.classes.button
+    button.innerHTML = action.icon
+    button.title = action.title
+    button.setAttribute('type', 'button')
+    button.onclick = () => action.result() || settings.element.content.focus()
+    actionbar.appendChild(button)
+  })
 
   if (settings.styleWithCSS) exec('styleWithCSS')
 
