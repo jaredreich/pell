@@ -10,6 +10,9 @@ var actions = {
   bold: {
     icon: '<b>B</b>',
     title: 'Bold',
+    state: function state() {
+      return queryCommandState('bold');
+    },
     result: function result() {
       return exec('bold');
     }
@@ -17,6 +20,9 @@ var actions = {
   italic: {
     icon: '<i>I</i>',
     title: 'Italic',
+    state: function state() {
+      return queryCommandState('italic');
+    },
     result: function result() {
       return exec('italic');
     }
@@ -24,6 +30,9 @@ var actions = {
   underline: {
     icon: '<u>U</u>',
     title: 'Underline',
+    state: function state() {
+      return queryCommandState('underline');
+    },
     result: function result() {
       return exec('underline');
     }
@@ -31,6 +40,9 @@ var actions = {
   strikethrough: {
     icon: '<strike>S</strike>',
     title: 'Strike-through',
+    state: function state() {
+      return queryCommandState('strikeThrough');
+    },
     result: function result() {
       return exec('strikeThrough');
     }
@@ -112,17 +124,22 @@ var actions = {
 var classes = {
   actionbar: 'pell-actionbar',
   button: 'pell-button',
-  content: 'pell-content'
+  content: 'pell-content',
+  selected: 'pell-button-selected'
+};
+
+var queryCommandState = function queryCommandState(command) {
+  return document.queryCommandState(command);
+};
+
+var preventTab = function preventTab(event) {
+  if (event.which === 9) event.preventDefault();
 };
 
 var exec = function exec(command) {
   var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
   document.execCommand(command, false, value);
-};
-
-var preventTab = function preventTab(event) {
-  if (event.which === 9) event.preventDefault();
 };
 
 var init = function init(settings) {
@@ -153,10 +170,24 @@ var init = function init(settings) {
     button.className = settings.classes.button;
     button.innerHTML = action.icon;
     button.title = action.title;
-    button.onclick = action.result;
+    button.setAttribute('type', 'button');
+    button.onclick = function () {
+      return action.result() || settings.element.content.focus();
+    };
+
+    if (action.state) {
+      var handler = function handler() {
+        return button.classList[action.state() ? 'add' : 'remove'](settings.classes.selected);
+      };
+      settings.element.content.addEventListener('keyup', handler);
+      settings.element.content.addEventListener('mouseup', handler);
+      button.addEventListener('click', handler);
+    }
+
     actionbar.appendChild(button);
   });
 
+  if (settings.defaultParagraphSeparator) exec('defaultParagraphSeparator', settings.defaultParagraphSeparator);
   if (settings.styleWithCSS) exec('styleWithCSS');
 
   return settings.element;

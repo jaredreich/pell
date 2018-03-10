@@ -13,7 +13,7 @@ Live demo: [https://jaredreich.com/pell](https://jaredreich.com/pell)
 
 | library       | size (min+gzip) | size (min) | jquery | bootstrap | link |
 |---------------|-----------------|------------|--------|-----------|------|
-| pell          | 1.11kB          | 2.85kB     |        |           | https://github.com/jaredreich/pell |
+| pell          | 1.29kB          | 3.48kB     |        |           | https://github.com/jaredreich/pell |
 | squire        | 16kB            | 49kB       |        |           | https://github.com/neilj/Squire |
 | medium-editor | 27kB            | 105kB      |        |           | https://github.com/yabwe/medium-editor |
 | quill         | 43kB            | 205kB      |        |           | https://github.com/quilljs/quill |
@@ -29,7 +29,7 @@ Live demo: [https://jaredreich.com/pell](https://jaredreich.com/pell)
 * Pure JavaScript, no dependencies, written in ES6
 * Easily customizable with the sass file (pell.scss) or overwrite the CSS
 
-Current actions:
+Included actions:
 - Bold
 - Italic
 - Underline
@@ -45,7 +45,7 @@ Current actions:
 - Link
 - Image
 
-Other possible future actions:
+Other available actions (listed at https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand):
 - Justify Center
 - Justify Full
 - Justify Left
@@ -59,6 +59,8 @@ Other possible future actions:
 - Clear Formatting
 - Undo
 - Redo
+
+Or create any custom action!
 
 ## Browser Support
 
@@ -116,7 +118,7 @@ window.pell
 
 ```js
 // Initialize pell on an HTMLElement
-pell.init({
+init({
   // <HTMLElement>, required
   element: document.getElementById('some-id'),
 
@@ -193,7 +195,7 @@ pell.exec(command<string>, value<string>)
 ```
 
 ```js
-const editor = pell.init({
+const editor = init({
   element: document.getElementById('pell'),
   onChange: html => {
     document.getElementById('text-output').innerHTML = html
@@ -206,7 +208,7 @@ const editor = pell.init({
     'underline',
     {
       name: 'italic',
-      result: () => window.pell.exec('italic')
+      result: () => exec('italic')
     },
     {
       name: 'custom',
@@ -218,14 +220,14 @@ const editor = pell.init({
       name: 'image',
       result: () => {
         const url = window.prompt('Enter the image URL')
-        if (url) window.pell.exec('insertImage', ensureHTTP(url))
+        if (url) exec('insertImage', ensureHTTP(url))
       }
     },
     {
       name: 'link',
       result: () => {
         const url = window.prompt('Enter the link URL')
-        if (url) window.pell.exec('createLink', ensureHTTP(url))
+        if (url) exec('createLink', ensureHTTP(url))
       }
     }
   ],

@@ -1,23 +1,17 @@
 .pell {
-  border-radius: 5px;
-  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
-  box-sizing: border-box;
-  width: 100%; }
+  border: 1px solid rgba(10, 10, 10, 0.1);
+  box-sizing: border-box; }
 
 .pell-content {
   box-sizing: border-box;
   height: 300px;
   outline: 0;
   overflow-y: auto;
-  padding: 10px;
-  width: 100%; }
+  padding: 10px; }
 
 .pell-actionbar {
   background-color: #FFF;
-  border-bottom: 1px solid rgba(10, 10, 10, 0.1);
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  width: 100%; }
+  border-bottom: 1px solid rgba(10, 10, 10, 0.1); }
 
 .pell-button {
   background-color: transparent;
@@ -25,4 +19,8 @@
   cursor: pointer;
   height: 30px;
   outline: 0;
-  width: 30px; }
+  width: 30px;
+  vertical-align: bottom; }
+
+.pell-button-selected {
+  background-color: #F0F0F0; }
