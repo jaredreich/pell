@@ -156,7 +156,8 @@ init({
   classes: {
     actionbar: 'pell-actionbar',
     button: 'pell-button',
-    content: 'pell-content'
+    content: 'pell-content',
+    selected: 'pell-button-selected'
   }
 })
 
