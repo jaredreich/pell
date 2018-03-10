@@ -104,15 +104,6 @@ export const init = settings => {
 
   const actionbar = document.createElement('div')
   actionbar.className = settings.classes.actionbar
-  settings.element.appendChild(actionbar)
-
-  settings.element.content = document.createElement('div')
-  settings.element.content.contentEditable = true
-  settings.element.content.className = settings.classes.content
-  settings.element.content.oninput = event => settings.onChange(event.target.innerHTML)
-  settings.element.content.onkeydown = preventTab
-  settings.element.appendChild(settings.element.content)
-
   settings.actions.forEach(action => {
     const button = document.createElement('button')
     button.className = settings.classes.button
@@ -122,6 +113,14 @@ export const init = settings => {
     button.onclick = action.result
     actionbar.appendChild(button)
   })
+  settings.element.appendChild(actionbar)
+
+  settings.element.content = document.createElement('div')
+  settings.element.content.contentEditable = true
+  settings.element.content.className = settings.classes.content
+  settings.element.content.oninput = event => settings.onChange(event.target.innerHTML)
+  settings.element.content.onkeydown = preventTab
+  settings.element.appendChild(settings.element.content)
 
   if (settings.styleWithCSS) exec('styleWithCSS')
 
