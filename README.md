@@ -124,6 +124,10 @@ pell.init({
   // Use the output html, triggered by element's `oninput` event
   onChange: html => console.log(html),
 
+  // <string>, optional, default = 'div'
+  // Instructs the editor which element to inject via the return key
+  defaultParagraphSeparator: 'div',
+
   // <boolean>, optional, default = false
   // Outputs <span style="font-weight: bold;"></span> instead of <b></b>
   styleWithCSS: false,
@@ -195,6 +199,7 @@ const editor = pell.init({
     document.getElementById('text-output').innerHTML = html
     document.getElementById('html-output').textContent = html
   },
+  defaultParagraphSeparator: 'p',
   styleWithCSS: true,
   actions: [
     'bold',
