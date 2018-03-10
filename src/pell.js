@@ -2,21 +2,25 @@ const actions = {
   bold: {
     icon: '<b>B</b>',
     title: 'Bold',
+    state: () => queryCommandState('bold'),
     result: () => exec('bold')
   },
   italic: {
     icon: '<i>I</i>',
     title: 'Italic',
+    state: () => queryCommandState('italic'),
     result: () => exec('italic')
   },
   underline: {
     icon: '<u>U</u>',
     title: 'Underline',
+    state: () => queryCommandState('underline'),
     result: () => exec('underline')
   },
   strikethrough: {
     icon: '<strike>S</strike>',
     title: 'Strike-through',
+    state: () => queryCommandState('strikeThrough'),
     result: () => exec('strikeThrough')
   },
   heading1: {
@@ -80,15 +84,18 @@ const actions = {
 const classes = {
   actionbar: 'pell-actionbar',
   button: 'pell-button',
-  content: 'pell-content'
+  content: 'pell-content',
+  selected: 'pell-button-selected'
+}
+
+const queryCommandState = command => document.queryCommandState(command)
+
+const preventTab = event => {
+  if (event.which === 9) event.preventDefault()
 }
 
 export const exec = (command, value = null) => {
   document.execCommand(command, false, value)
-}
-
-const preventTab = event => {
-  if (event.which === 9) event.preventDefault()
 }
 
 export const init = settings => {
@@ -120,6 +127,14 @@ export const init = settings => {
     button.title = action.title
     button.setAttribute('type', 'button')
     button.onclick = () => action.result() || settings.element.content.focus()
+
+    if (action.state) {
+      const handler = () => button.classList[action.state() ? 'add' : 'remove'](settings.classes.selected)
+      settings.element.content.addEventListener('keyup', handler)
+      settings.element.content.addEventListener('mouseup', handler)
+      button.addEventListener('click', handler)
+    }
+
     actionbar.appendChild(button)
   })
 

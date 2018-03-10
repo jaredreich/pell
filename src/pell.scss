@@ -5,6 +5,7 @@ $pell-border-style: solid !default;
 $pell-border-width: 1px !default;
 $pell-box-shadow: 0 2px 3px $pell-border-color, 0 0 0 1px $pell-border-color !default;
 $pell-button-height: 30px !default;
+$pell-button-selected-color: #F0F0F0 !default;
 $pell-button-width: 30px !default;
 $pell-content-height: 300px !default;
 $pell-content-padding: 10px !default;
@@ -37,4 +38,9 @@ $pell-content-padding: 10px !default;
   height: $pell-button-height;
   outline: 0;
   width: $pell-button-width;
+  vertical-align: bottom;
+}
+
+.pell-button-selected {
+  background-color: $pell-button-selected-color;
 }
