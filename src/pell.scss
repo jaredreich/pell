@@ -1,9 +1,7 @@
 $pell-actionbar-color: #FFF !default;
 $pell-border-color: rgba(10, 10, 10, 0.1) !default;
-$pell-border-radius: 5px !default;
 $pell-border-style: solid !default;
 $pell-border-width: 1px !default;
-$pell-box-shadow: 0 2px 3px $pell-border-color, 0 0 0 1px $pell-border-color !default;
 $pell-button-height: 30px !default;
 $pell-button-selected-color: #F0F0F0 !default;
 $pell-button-width: 30px !default;
@@ -11,8 +9,7 @@ $pell-content-height: 300px !default;
 $pell-content-padding: 10px !default;
 
 .pell {
-  border-radius: $pell-border-radius;
-  box-shadow: $pell-box-shadow;
+  border: $pell-border-width $pell-border-style $pell-border-color;
   box-sizing: border-box;
 }
 
@@ -27,8 +24,6 @@ $pell-content-padding: 10px !default;
 .pell-actionbar {
   background-color: $pell-actionbar-color;
   border-bottom: $pell-border-width $pell-border-style $pell-border-color;
-  border-top-left-radius: $pell-border-radius;
-  border-top-right-radius: $pell-border-radius;
 }
 
 .pell-button {
