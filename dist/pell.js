@@ -51,28 +51,28 @@ var actions = {
     icon: '<b>H<sub>1</sub></b>',
     title: 'Heading 1',
     result: function result() {
-      return exec('formatBlock', '<H1>');
+      return exec(formatBlock, '<h1>');
     }
   },
   heading2: {
     icon: '<b>H<sub>2</sub></b>',
     title: 'Heading 2',
     result: function result() {
-      return exec('formatBlock', '<H2>');
+      return exec(formatBlock, '<h2>');
     }
   },
   paragraph: {
     icon: '&#182;',
     title: 'Paragraph',
     result: function result() {
-      return exec('formatBlock', '<P>');
+      return exec(formatBlock, '<p>');
     }
   },
   quote: {
     icon: '&#8220; &#8221;',
     title: 'Quote',
     result: function result() {
-      return exec('formatBlock', '<BLOCKQUOTE>');
+      return exec(formatBlock, '<blockquote>');
     }
   },
   olist: {
@@ -93,7 +93,7 @@ var actions = {
     icon: '&lt;/&gt;',
     title: 'Code',
     result: function result() {
-      return exec('formatBlock', '<PRE>');
+      return exec(formatBlock, '<pre>');
     }
   },
   line: {
@@ -128,69 +128,98 @@ var classes = {
   selected: 'pell-button-selected'
 };
 
+var element = null;
+var defaultParagraphSeparator = null;
+
+var formatBlock = 'formatBlock';
+var addEventListener = function addEventListener(parent, type, listener) {
+  return parent.addEventListener(type, listener);
+};
+var appendChild = function appendChild(parent, child) {
+  return parent.appendChild(child);
+};
+var createElement = function createElement(tag) {
+  return document.createElement(tag);
+};
 var queryCommandState = function queryCommandState(command) {
   return document.queryCommandState(command);
 };
+var queryCommandValue = function queryCommandValue(command) {
+  return document.queryCommandValue(command);
+};
 
-var preventTab = function preventTab(event) {
-  if (event.which === 9) event.preventDefault();
+var handleKeyDown = function handleKeyDown(event, settings) {
+  if (event.which === 9) {
+    event.preventDefault();
+  } else if (event.which === 13 && queryCommandValue(formatBlock) === 'blockquote') {
+    setTimeout(function () {
+      return exec(formatBlock, '<' + defaultParagraphSeparator + '>');
+    }, 0);
+  }
 };
 
 var exec = function exec(command) {
   var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-  document.execCommand(command, false, value);
+  return document.execCommand(command, false, value);
 };
 
 var init = function init(settings) {
-  settings.actions = settings.actions ? settings.actions.map(function (action) {
+  element = settings.element;
+  defaultParagraphSeparator = settings.defaultParagraphSeparator || 'div';
+
+  actions = settings.actions ? settings.actions.map(function (action) {
     if (typeof action === 'string') return actions[action];else if (actions[action.name]) return _extends({}, actions[action.name], action);
     return action;
   }) : Object.keys(actions).map(function (action) {
     return actions[action];
   });
 
-  settings.classes = _extends({}, classes, settings.classes);
+  classes = _extends({}, classes, settings.classes);
 
-  var actionbar = document.createElement('div');
-  actionbar.className = settings.classes.actionbar;
-  settings.element.appendChild(actionbar);
+  var actionbar = createElement('div');
+  actionbar.className = classes.actionbar;
+  appendChild(element, actionbar);
 
-  settings.element.content = document.createElement('div');
-  settings.element.content.contentEditable = true;
-  settings.element.content.className = settings.classes.content;
-  settings.element.content.oninput = function (event) {
-    return settings.onChange(event.target.innerHTML);
+  var content = createElement('div');
+  content.contentEditable = true;
+  content.className = classes.content;
+  content.oninput = function (_ref) {
+    var firstChild = _ref.target.firstChild;
+
+    if (firstChild && firstChild.nodeType === 3) exec(formatBlock, '<' + defaultParagraphSeparator + '>');else if (content.innerHTML === '<br>') content.innerHTML = '';
+    settings.onChange(content.innerHTML);
   };
-  settings.element.content.onkeydown = preventTab;
-  settings.element.appendChild(settings.element.content);
+  content.onkeydown = function (event) {
+    return handleKeyDown(event, settings);
+  };
+  appendChild(element, content);
 
-  settings.actions.forEach(function (action) {
-    var button = document.createElement('button');
-    button.className = settings.classes.button;
+  actions.forEach(function (action) {
+    var button = createElement('button');
+    button.className = classes.button;
     button.innerHTML = action.icon;
     button.title = action.title;
     button.setAttribute('type', 'button');
     button.onclick = function () {
-      return action.result() || settings.element.content.focus();
+      return action.result() || content.focus();
     };
 
     if (action.state) {
       var handler = function handler() {
-        return button.classList[action.state() ? 'add' : 'remove'](settings.classes.selected);
+        return button.classList[action.state() ? 'add' : 'remove'](classes.selected);
       };
-      settings.element.content.addEventListener('keyup', handler);
-      settings.element.content.addEventListener('mouseup', handler);
-      button.addEventListener('click', handler);
+      addEventListener(content, 'keyup', handler);
+      addEventListener(content, 'mouseup', handler);
+      addEventListener(button, 'click', handler);
     }
 
-    actionbar.appendChild(button);
+    appendChild(actionbar, button);
   });
 
-  if (settings.defaultParagraphSeparator) exec('defaultParagraphSeparator', settings.defaultParagraphSeparator);
+  if (defaultParagraphSeparator) exec('defaultParagraphSeparator', defaultParagraphSeparator);
   if (settings.styleWithCSS) exec('styleWithCSS');
 
-  return settings.element;
+  return element;
 };
 
 var pell = { exec: exec, init: init };

@@ -1,4 +1,4 @@
-const actions = {
+let actions = {
   bold: {
     icon: '<b>B</b>',
     title: 'Bold',
@@ -26,22 +26,22 @@ const actions = {
   heading1: {
     icon: '<b>H<sub>1</sub></b>',
     title: 'Heading 1',
-    result: () => exec('formatBlock', '<H1>')
+    result: () => exec(formatBlock, '<h1>')
   },
   heading2: {
     icon: '<b>H<sub>2</sub></b>',
     title: 'Heading 2',
-    result: () => exec('formatBlock', '<H2>')
+    result: () => exec(formatBlock, '<h2>')
   },
   paragraph: {
     icon: '&#182;',
     title: 'Paragraph',
-    result: () => exec('formatBlock', '<P>')
+    result: () => exec(formatBlock, '<p>')
   },
   quote: {
     icon: '&#8220; &#8221;',
     title: 'Quote',
-    result: () => exec('formatBlock', '<BLOCKQUOTE>')
+    result: () => exec(formatBlock, '<blockquote>')
   },
   olist: {
     icon: '&#35;',
@@ -56,7 +56,7 @@ const actions = {
   code: {
     icon: '&lt;/&gt;',
     title: 'Code',
-    result: () => exec('formatBlock', '<PRE>')
+    result: () => exec(formatBlock, '<pre>')
   },
   line: {
     icon: '&#8213;',
@@ -81,25 +81,38 @@ const actions = {
   }
 }
 
-const classes = {
+let classes = {
   actionbar: 'pell-actionbar',
   button: 'pell-button',
   content: 'pell-content',
   selected: 'pell-button-selected'
 }
 
+let element = null
+let defaultParagraphSeparator = null
+
+const formatBlock = 'formatBlock'
+const addEventListener = (parent, type, listener) => parent.addEventListener(type, listener)
+const appendChild = (parent, child) => parent.appendChild(child)
+const createElement = tag => document.createElement(tag)
 const queryCommandState = command => document.queryCommandState(command)
+const queryCommandValue = command => document.queryCommandValue(command)
 
-const preventTab = event => {
-  if (event.which === 9) event.preventDefault()
+const handleKeyDown = (event, settings) => {
+  if (event.which === 9) {
+    event.preventDefault()
+  } else if (event.which === 13 && queryCommandValue(formatBlock) === 'blockquote') {
+    setTimeout(() => exec(formatBlock, `<${defaultParagraphSeparator}>`), 0)
+  }
 }
 
-export const exec = (command, value = null) => {
-  document.execCommand(command, false, value)
-}
+export const exec = (command, value = null) => document.execCommand(command, false, value)
 
 export const init = settings => {
-  settings.actions = settings.actions
+  element = settings.element
+  defaultParagraphSeparator = settings.defaultParagraphSeparator || 'div'
+
+  actions = settings.actions
     ? settings.actions.map(action => {
       if (typeof action === 'string') return actions[action]
       else if (actions[action.name]) return { ...actions[action.name], ...action }
@@ -107,41 +120,45 @@ export const init = settings => {
     })
     : Object.keys(actions).map(action => actions[action])
 
-  settings.classes = { ...classes, ...settings.classes }
+  classes = { ...classes, ...settings.classes }
 
-  const actionbar = document.createElement('div')
-  actionbar.className = settings.classes.actionbar
-  settings.element.appendChild(actionbar)
+  const actionbar = createElement('div')
+  actionbar.className = classes.actionbar
+  appendChild(element, actionbar)
 
-  settings.element.content = document.createElement('div')
-  settings.element.content.contentEditable = true
-  settings.element.content.className = settings.classes.content
-  settings.element.content.oninput = event => settings.onChange(event.target.innerHTML)
-  settings.element.content.onkeydown = preventTab
-  settings.element.appendChild(settings.element.content)
+  const content = createElement('div')
+  content.contentEditable = true
+  content.className = classes.content
+  content.oninput = ({ target: { firstChild } }) => {
+    if (firstChild && firstChild.nodeType === 3) exec(formatBlock, `<${defaultParagraphSeparator}>`)
+    else if (content.innerHTML === '<br>') content.innerHTML = ''
+    settings.onChange(content.innerHTML)
+  }
+  content.onkeydown = event => handleKeyDown(event, settings)
+  appendChild(element, content)
 
-  settings.actions.forEach(action => {
-    const button = document.createElement('button')
-    button.className = settings.classes.button
+  actions.forEach(action => {
+    const button = createElement('button')
+    button.className = classes.button
     button.innerHTML = action.icon
     button.title = action.title
     button.setAttribute('type', 'button')
-    button.onclick = () => action.result() || settings.element.content.focus()
+    button.onclick = () => action.result() || content.focus()
 
     if (action.state) {
-      const handler = () => button.classList[action.state() ? 'add' : 'remove'](settings.classes.selected)
-      settings.element.content.addEventListener('keyup', handler)
-      settings.element.content.addEventListener('mouseup', handler)
-      button.addEventListener('click', handler)
+      const handler = () => button.classList[action.state() ? 'add' : 'remove'](classes.selected)
+      addEventListener(content, 'keyup', handler)
+      addEventListener(content, 'mouseup', handler)
+      addEventListener(button, 'click', handler)
     }
 
-    actionbar.appendChild(button)
+    appendChild(actionbar, button)
   })
 
-  if (settings.defaultParagraphSeparator) exec('defaultParagraphSeparator', settings.defaultParagraphSeparator)
+  if (defaultParagraphSeparator) exec('defaultParagraphSeparator', defaultParagraphSeparator)
   if (settings.styleWithCSS) exec('styleWithCSS')
 
-  return settings.element
+  return element
 }
 
 export default { exec, init }

@@ -64,7 +64,7 @@ Or create any custom action!
 
 ## Browser Support
 
-* IE 9+
+* IE 9+ (theoretically, but good luck)
 * Chrome 5+
 * Firefox 4+
 * Safari 5+
@@ -235,7 +235,8 @@ const editor = init({
   classes: {
     actionbar: 'pell-actionbar-custom-name',
     button: 'pell-button-custom-name',
-    content: 'pell-content-custom-name'
+    content: 'pell-content-custom-name',
+    selected: 'pell-button-selected-custom-name'
   }
 })
 

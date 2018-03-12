@@ -44,10 +44,6 @@
 
     <script src="dist/pell.js"></script>
     <script>
-      function ensureHTTP (str) {
-        return /^https?:\/\//.test(str) && str || `http://${str}`
-      }
-
       var editor = window.pell.init({
         element: document.getElementById('pell'),
         defaultParagraphSeparator: 'p',
