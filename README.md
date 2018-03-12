@@ -13,7 +13,7 @@ Live demo: [https://jaredreich.com/pell](https://jaredreich.com/pell)
 
 | library       | size (min+gzip) | size (min) | jquery | bootstrap | link |
 |---------------|-----------------|------------|--------|-----------|------|
-| pell          | 1.29kB          | 3.48kB     |        |           | https://github.com/jaredreich/pell |
+| pell          | 1.39kB          | 3.48kB     |        |           | https://github.com/jaredreich/pell |
 | squire        | 16kB            | 49kB       |        |           | https://github.com/neilj/Squire |
 | medium-editor | 27kB            | 105kB      |        |           | https://github.com/yabwe/medium-editor |
 | quill         | 43kB            | 205kB      |        |           | https://github.com/quilljs/quill |
