@@ -11,18 +11,19 @@ Live demo: [https://jaredreich.com/pell](https://jaredreich.com/pell)
 
 ## Comparisons
 
-| library       | size (min+gzip) | size (min) | jquery | bootstrap | link |
-|---------------|-----------------|------------|--------|-----------|------|
-| pell          | 1.39kB          | 3.48kB     |        |           | https://github.com/jaredreich/pell |
-| squire        | 16kB            | 49kB       |        |           | https://github.com/neilj/Squire |
-| medium-editor | 27kB            | 105kB      |        |           | https://github.com/yabwe/medium-editor |
-| quill         | 43kB            | 205kB      |        |           | https://github.com/quilljs/quill |
-| trix          | 47kB            | 204kB      |        |           | https://github.com/basecamp/trix |
-| ckeditor      | 163kB           | 551kB      |        |           | https://ckeditor.com |
-| trumbowyg     | 8kB             | 23kB       | x      |           | https://github.com/Alex-D/Trumbowyg |
-| summernote    | 26kB            | 93kB       | x      | x         | https://github.com/summernote/summernote |
-| froala        | 52kB            | 186kB      | x      |           | https://github.com/froala/wysiwyg-editor |
-| tinymce       | 157kB           | 491kB      | x      |           | https://github.com/tinymce/tinymce |
+| library       | size (min+gzip) | size (min) | jquery | bootstrap | react | link |
+|---------------|-----------------|------------|--------|-----------|-------|------|
+| pell          | 1.40kB          | 3.49kB     |        |           |       | https://github.com/jaredreich/pell |
+| squire        | 16kB            | 49kB       |        |           |       | https://github.com/neilj/Squire |
+| medium-editor | 27kB            | 105kB      |        |           |       | https://github.com/yabwe/medium-editor |
+| quill         | 43kB            | 205kB      |        |           |       | https://github.com/quilljs/quill |
+| trix          | 47kB            | 204kB      |        |           |       | https://github.com/basecamp/trix |
+| ckeditor      | 163kB           | 551kB      |        |           |       | https://ckeditor.com |
+| trumbowyg     | 8kB             | 23kB       | x      |           |       | https://github.com/Alex-D/Trumbowyg |
+| summernote    | 26kB            | 93kB       | x      | x         |       | https://github.com/summernote/summernote |
+| draft         | 46kB            | 147kB      |        |           | x     | https://github.com/facebook/draft-js |
+| froala        | 52kB            | 186kB      | x      |           |       | https://github.com/froala/wysiwyg-editor |
+| tinymce       | 157kB           | 491kB      | x      |           |       | https://github.com/tinymce/tinymce |
 
 ## Features
 
