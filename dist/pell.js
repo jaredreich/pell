@@ -201,7 +201,9 @@ var init = function init(settings) {
     button.title = action.title;
     button.setAttribute('type', 'button');
     button.onclick = function () {
-      return action.result() && content.focus();
+      var selection = window.getSelection().toString();
+      action.result(selection);
+      content.focus();
     };
 
     if (action.state) {
