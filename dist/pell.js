@@ -6,7 +6,30 @@
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var actions = {
+var defaultParagraphSeparatorString = 'defaultParagraphSeparator';
+var formatBlock = 'formatBlock';
+var addEventListener = function addEventListener(parent, type, listener) {
+  return parent.addEventListener(type, listener);
+};
+var appendChild = function appendChild(parent, child) {
+  return parent.appendChild(child);
+};
+var createElement = function createElement(tag) {
+  return document.createElement(tag);
+};
+var queryCommandState = function queryCommandState(command) {
+  return document.queryCommandState(command);
+};
+var queryCommandValue = function queryCommandValue(command) {
+  return document.queryCommandValue(command);
+};
+
+var exec = function exec(command) {
+  var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  return document.execCommand(command, false, value);
+};
+
+var defaultActions = {
   bold: {
     icon: '<b>B</b>',
     title: 'Bold',
@@ -121,66 +144,30 @@ var actions = {
   }
 };
 
-var classes = {
+var defaultClasses = {
   actionbar: 'pell-actionbar',
   button: 'pell-button',
   content: 'pell-content',
   selected: 'pell-button-selected'
 };
 
-var element = null;
-var defaultParagraphSeparator = null;
-
-var formatBlock = 'formatBlock';
-var addEventListener = function addEventListener(parent, type, listener) {
-  return parent.addEventListener(type, listener);
-};
-var appendChild = function appendChild(parent, child) {
-  return parent.appendChild(child);
-};
-var createElement = function createElement(tag) {
-  return document.createElement(tag);
-};
-var queryCommandState = function queryCommandState(command) {
-  return document.queryCommandState(command);
-};
-var queryCommandValue = function queryCommandValue(command) {
-  return document.queryCommandValue(command);
-};
-
-var handleKeyDown = function handleKeyDown(event, settings) {
-  if (event.key === 'Tab') {
-    event.preventDefault();
-  } else if (event.key === 'Enter' && queryCommandValue(formatBlock) === 'blockquote') {
-    setTimeout(function () {
-      return exec(formatBlock, '<' + defaultParagraphSeparator + '>');
-    }, 0);
-  }
-};
-
-var exec = function exec(command) {
-  var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-  return document.execCommand(command, false, value);
-};
-
 var init = function init(settings) {
-  element = settings.element;
-  defaultParagraphSeparator = settings.defaultParagraphSeparator || 'div';
-
-  actions = settings.actions ? settings.actions.map(function (action) {
-    if (typeof action === 'string') return actions[action];else if (actions[action.name]) return _extends({}, actions[action.name], action);
+  var actions = settings.actions ? settings.actions.map(function (action) {
+    if (typeof action === 'string') return defaultActions[action];else if (defaultActions[action.name]) return _extends({}, defaultActions[action.name], action);
     return action;
-  }) : Object.keys(actions).map(function (action) {
-    return actions[action];
+  }) : Object.keys(defaultActions).map(function (action) {
+    return defaultActions[action];
   });
 
-  classes = _extends({}, classes, settings.classes);
+  var classes = _extends({}, defaultClasses, settings.classes);
+
+  var defaultParagraphSeparator = settings[defaultParagraphSeparatorString] || 'div';
 
   var actionbar = createElement('div');
   actionbar.className = classes.actionbar;
-  appendChild(element, actionbar);
+  appendChild(settings.element, actionbar);
 
-  var content = element.content = createElement('div');
+  var content = settings.element.content = createElement('div');
   content.contentEditable = true;
   content.className = classes.content;
   content.oninput = function (_ref) {
@@ -190,9 +177,15 @@ var init = function init(settings) {
     settings.onChange(content.innerHTML);
   };
   content.onkeydown = function (event) {
-    return handleKeyDown(event, settings);
+    if (event.key === 'Tab') {
+      event.preventDefault();
+    } else if (event.key === 'Enter' && queryCommandValue(formatBlock) === 'blockquote') {
+      setTimeout(function () {
+        return exec(formatBlock, '<' + defaultParagraphSeparator + '>');
+      }, 0);
+    }
   };
-  appendChild(element, content);
+  appendChild(settings.element, content);
 
   actions.forEach(function (action) {
     var button = createElement('button');
@@ -216,10 +209,10 @@ var init = function init(settings) {
     appendChild(actionbar, button);
   });
 
-  if (defaultParagraphSeparator) exec('defaultParagraphSeparator', defaultParagraphSeparator);
   if (settings.styleWithCSS) exec('styleWithCSS');
+  exec(defaultParagraphSeparatorString, defaultParagraphSeparator);
 
-  return element;
+  return settings.element;
 };
 
 var pell = { exec: exec, init: init };

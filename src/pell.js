@@ -1,4 +1,14 @@
-let actions = {
+const defaultParagraphSeparatorString = 'defaultParagraphSeparator'
+const formatBlock = 'formatBlock'
+const addEventListener = (parent, type, listener) => parent.addEventListener(type, listener)
+const appendChild = (parent, child) => parent.appendChild(child)
+const createElement = tag => document.createElement(tag)
+const queryCommandState = command => document.queryCommandState(command)
+const queryCommandValue = command => document.queryCommandValue(command)
+
+export const exec = (command, value = null) => document.execCommand(command, false, value)
+
+const defaultActions = {
   bold: {
     icon: '<b>B</b>',
     title: 'Bold',
@@ -81,52 +91,33 @@ let actions = {
   }
 }
 
-let classes = {
+const defaultClasses = {
   actionbar: 'pell-actionbar',
   button: 'pell-button',
   content: 'pell-content',
   selected: 'pell-button-selected'
 }
 
-let element = null
-let defaultParagraphSeparator = null
-
-const formatBlock = 'formatBlock'
-const addEventListener = (parent, type, listener) => parent.addEventListener(type, listener)
-const appendChild = (parent, child) => parent.appendChild(child)
-const createElement = tag => document.createElement(tag)
-const queryCommandState = command => document.queryCommandState(command)
-const queryCommandValue = command => document.queryCommandValue(command)
-
-const handleKeyDown = (event, settings) => {
-  if (event.key === 'Tab') {
-    event.preventDefault()
-  } else if (event.key === 'Enter' && queryCommandValue(formatBlock) === 'blockquote') {
-    setTimeout(() => exec(formatBlock, `<${defaultParagraphSeparator}>`), 0)
-  }
-}
-
-export const exec = (command, value = null) => document.execCommand(command, false, value)
-
 export const init = settings => {
-  element = settings.element
-  defaultParagraphSeparator = settings.defaultParagraphSeparator || 'div'
+  const actions = settings.actions
+    ? (
+      settings.actions.map(action => {
+        if (typeof action === 'string') return defaultActions[action]
+        else if (defaultActions[action.name]) return { ...defaultActions[action.name], ...action }
+        return action
+      })
+    )
+    : Object.keys(defaultActions).map(action => defaultActions[action])
 
-  actions = settings.actions
-    ? settings.actions.map(action => {
-      if (typeof action === 'string') return actions[action]
-      else if (actions[action.name]) return { ...actions[action.name], ...action }
-      return action
-    })
-    : Object.keys(actions).map(action => actions[action])
+  const classes = { ...defaultClasses, ...settings.classes }
 
-  classes = { ...classes, ...settings.classes }
+  const defaultParagraphSeparator = settings[defaultParagraphSeparatorString] || 'div'
 
   const actionbar = createElement('div')
   actionbar.className = classes.actionbar
-  appendChild(element, actionbar)
+  appendChild(settings.element, actionbar)
 
-  const content = element.content = createElement('div')
+  const content = settings.element.content = createElement('div')
   content.contentEditable = true
   content.className = classes.content
   content.oninput = ({ target: { firstChild } }) => {
@@ -134,8 +125,14 @@ export const init = settings => {
     else if (content.innerHTML === '<br>') content.innerHTML = ''
     settings.onChange(content.innerHTML)
   }
-  content.onkeydown = event => handleKeyDown(event, settings)
-  appendChild(element, content)
+  content.onkeydown = event => {
+    if (event.key === 'Tab') {
+      event.preventDefault()
+    } else if (event.key === 'Enter' && queryCommandValue(formatBlock) === 'blockquote') {
+      setTimeout(() => exec(formatBlock, `<${defaultParagraphSeparator}>`), 0)
+    }
+  }
+  appendChild(settings.element, content)
 
   actions.forEach(action => {
     const button = createElement('button')
@@ -155,10 +152,10 @@ export const init = settings => {
     appendChild(actionbar, button)
   })
 
-  if (defaultParagraphSeparator) exec('defaultParagraphSeparator', defaultParagraphSeparator)
   if (settings.styleWithCSS) exec('styleWithCSS')
+  exec(defaultParagraphSeparatorString, defaultParagraphSeparator)
 
-  return element
+  return settings.element
 }
 
 export default { exec, init }
