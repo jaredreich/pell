@@ -1,4 +1,4 @@
-let actions = {
+const actions = {
   bold: {
     icon: '<b>B</b>',
     title: 'Bold',
@@ -112,7 +112,7 @@ export const init = settings => {
   element = settings.element
   defaultParagraphSeparator = settings.defaultParagraphSeparator || 'div'
 
-  actions = settings.actions
+  const _actions = settings.actions
     ? settings.actions.map(action => {
       if (typeof action === 'string') return actions[action]
       else if (actions[action.name]) return { ...actions[action.name], ...action }
@@ -137,7 +137,7 @@ export const init = settings => {
   content.onkeydown = event => handleKeyDown(event, settings)
   appendChild(element, content)
 
-  actions.forEach(action => {
+  _actions.forEach(action => {
     const button = createElement('button')
     button.className = classes.button
     button.innerHTML = action.icon

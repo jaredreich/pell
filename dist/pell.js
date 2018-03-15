@@ -167,7 +167,7 @@ var init = function init(settings) {
   element = settings.element;
   defaultParagraphSeparator = settings.defaultParagraphSeparator || 'div';
 
-  actions = settings.actions ? settings.actions.map(function (action) {
+  var _actions = settings.actions ? settings.actions.map(function (action) {
     if (typeof action === 'string') return actions[action];else if (actions[action.name]) return _extends({}, actions[action.name], action);
     return action;
   }) : Object.keys(actions).map(function (action) {
@@ -194,7 +194,7 @@ var init = function init(settings) {
   };
   appendChild(element, content);
 
-  actions.forEach(function (action) {
+  _actions.forEach(function (action) {
     var button = createElement('button');
     button.className = classes.button;
     button.innerHTML = action.icon;
