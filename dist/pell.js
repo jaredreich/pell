@@ -180,7 +180,7 @@ var init = function init(settings) {
   actionbar.className = classes.actionbar;
   appendChild(element, actionbar);
 
-  var content = createElement('div');
+  var content = element.content = createElement('div');
   content.contentEditable = true;
   content.className = classes.content;
   content.oninput = function (_ref) {

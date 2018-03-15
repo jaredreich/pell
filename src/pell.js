@@ -126,7 +126,7 @@ export const init = settings => {
   actionbar.className = classes.actionbar
   appendChild(element, actionbar)
 
-  const content = createElement('div')
+  const content = element.content = createElement('div')
   content.contentEditable = true
   content.className = classes.content
   content.oninput = ({ target: { firstChild } }) => {
