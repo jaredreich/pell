@@ -4,6 +4,7 @@
   "author": "Jared Reich",
   "version": "1.0.3",
   "main": "./dist/pell.min.js",
+  "typings": "./index.d.ts",
   "scripts": {
     "dev": "gulp",
     "build": "gulp clean && gulp script && gulp style",
