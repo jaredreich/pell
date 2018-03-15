@@ -99,9 +99,9 @@ const queryCommandState = command => document.queryCommandState(command)
 const queryCommandValue = command => document.queryCommandValue(command)
 
 const handleKeyDown = (event, settings) => {
-  if (event.which === 9) {
+  if (event.key === 'Tab') {
     event.preventDefault()
-  } else if (event.which === 13 && queryCommandValue(formatBlock) === 'blockquote') {
+  } else if (event.key === 'Enter' && queryCommandValue(formatBlock) === 'blockquote') {
     setTimeout(() => exec(formatBlock, `<${defaultParagraphSeparator}>`), 0)
   }
 }

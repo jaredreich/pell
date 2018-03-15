@@ -149,9 +149,9 @@ var queryCommandValue = function queryCommandValue(command) {
 };
 
 var handleKeyDown = function handleKeyDown(event, settings) {
-  if (event.which === 9) {
+  if (event.key === 'Tab') {
     event.preventDefault();
-  } else if (event.which === 13 && queryCommandValue(formatBlock) === 'blockquote') {
+  } else if (event.key === 'Enter' && queryCommandValue(formatBlock) === 'blockquote') {
     setTimeout(function () {
       return exec(formatBlock, '<' + defaultParagraphSeparator + '>');
     }, 0);
