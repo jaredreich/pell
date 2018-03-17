@@ -119,7 +119,7 @@ window.pell
 
 ```js
 // Initialize pell on an HTMLElement
-init({
+pell.init({
   // <HTMLElement>, required
   element: document.getElementById('some-id'),
 
@@ -147,7 +147,7 @@ init({
       name: 'custom',
       icon: 'C',
       title: 'Custom Action',
-      result: () => console.log('YOLO')
+      result: () => console.log('Do something!')
     },
     'underline'
   ],
@@ -189,18 +189,17 @@ pell.exec(command<string>, value<string>)
 ```html
 <div id="pell"></div>
 <div>
-  Text output:
-  <div id="text-output"></div>
   HTML output:
-  <pre id="html-output"></pre>
+  <div id="html-output" style="white-space:pre-wrap;"></div>
 </div>
 ```
 
 ```js
+import { exec, init } from 'pell'
+
 const editor = init({
   element: document.getElementById('pell'),
   onChange: html => {
-    document.getElementById('text-output').innerHTML = html
     document.getElementById('html-output').textContent = html
   },
   defaultParagraphSeparator: 'p',
@@ -222,14 +221,14 @@ const editor = init({
       name: 'image',
       result: () => {
         const url = window.prompt('Enter the image URL')
-        if (url) exec('insertImage', ensureHTTP(url))
+        if (url) exec('insertImage', url)
       }
     },
     {
       name: 'link',
       result: () => {
         const url = window.prompt('Enter the link URL')
-        if (url) exec('createLink', ensureHTTP(url))
+        if (url) exec('createLink', url)
       }
     }
   ],
@@ -244,6 +243,31 @@ const editor = init({
 // editor.content<HTMLElement>
 // To change the editor's content:
 editor.content.innerHTML = '<b><u><i>Initial content!</i></u></b>'
+```
+
+#### Example (Markdown)
+
+```html
+<div id="pell"></div>
+<div>
+  Markdown output:
+  <div id="markdown-output" style="white-space:pre-wrap;"></div>
+</div>
+```
+
+```js
+import { init } from 'pell'
+import Turndown from 'turndown'
+
+const { turndown } = new Turndown({ headingStyle: 'atx' })
+
+init({
+  element: document.getElementById('pell'),
+  actions: ['bold', 'italic', 'heading1', 'heading2', 'olist', 'ulist'],
+  onChange: html => {
+    document.getElementById('markdown-output').innerHTML = turndown(html)
+  }
+})
 ```
 
 ## Custom Styles
