@@ -20,7 +20,7 @@ export interface Settings {
   onChange: (html: string) => void
 
   // Instructs the editor which element to inject via the return key
-  defaultParagraphSeperator?: string
+  defaultParagraphSeparator?: string
 
   // Outputs <span style="font-weight: bold;"></span> instead of <b></b>
   styleWithCSS?: boolean
