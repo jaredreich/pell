@@ -30,6 +30,26 @@ var exec = function exec(command) {
 };
 
 var defaultActions = {
+  bigger: {
+    icon: 'A<b>+</b>',
+    title: 'Increase font size',
+    state: function state() {
+      return queryCommandState('fontSize', 7);
+    },
+    result: function result() {
+      return exec('fontSize', Math.min(Number(queryCommandValue('FontSize')) + 1, 7));
+    }
+  },
+  smaller: {
+    icon: 'A<b>-</b>',
+    title: 'Decrease font size',
+    state: function state() {
+      return queryCommandState('fontSize', 1);
+    },
+    result: function result() {
+      return exec('fontSize', Math.max(Number(queryCommandValue('FontSize')) - 1, 1));
+    }
+  },
   bold: {
     icon: '<b>B</b>',
     title: 'Bold',

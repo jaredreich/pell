@@ -9,6 +9,18 @@ const queryCommandValue = command => document.queryCommandValue(command)
 export const exec = (command, value = null) => document.execCommand(command, false, value)
 
 const defaultActions = {
+  bigger: {
+    icon: 'A<b>+</b>',
+    title: 'Increase font size',
+    state: () => queryCommandState('fontSize', 7),
+    result: () => exec('fontSize', Math.min(Number(queryCommandValue('FontSize')) + 1, 7))
+  },
+  smaller: {
+    icon: 'A<b>-</b>',
+    title: 'Decrease font size',
+    state: () => queryCommandState('fontSize', 1),
+    result: () => exec('fontSize', Math.max(Number(queryCommandValue('FontSize')) - 1, 1))
+  },
   bold: {
     icon: '<b>B</b>',
     title: 'Bold',
