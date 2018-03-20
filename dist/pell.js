@@ -34,7 +34,7 @@ var defaultActions = {
     icon: 'A<b>+</b>',
     title: 'Increase font size',
     state: function state() {
-      return queryCommandState('fontSize', 7);
+      return queryCommandState('fontSize');
     },
     result: function result() {
       return exec('fontSize', Math.min(Number(queryCommandValue('FontSize')) + 1, 7));
@@ -44,7 +44,7 @@ var defaultActions = {
     icon: 'A<b>-</b>',
     title: 'Decrease font size',
     state: function state() {
-      return queryCommandState('fontSize', 1);
+      return queryCommandState('fontSize');
     },
     result: function result() {
       return exec('fontSize', Math.max(Number(queryCommandValue('FontSize')) - 1, 1));
