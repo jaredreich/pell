@@ -170,11 +170,29 @@ var init = function init(settings) {
   var content = settings.element.content = createElement('div');
   content.contentEditable = true;
   content.className = classes.content;
-  content.oninput = function (_ref) {
+
+  var compositionStarted = false;
+  content.addEventListener('compositionstart', function () {
+    return compositionStarted = true;
+  });
+
+  var handleInput = function handleInput(_ref) {
     var firstChild = _ref.target.firstChild;
 
     if (firstChild && firstChild.nodeType === 3) exec(formatBlock, '<' + defaultParagraphSeparator + '>');else if (content.innerHTML === '<br>') content.innerHTML = '';
     settings.onChange(content.innerHTML);
+  };
+
+  content.oninput = function (e) {
+    if (compositionStarted) {
+      var handleInputOnce = function handleInputOnce(e) {
+        handleInput(e);
+        content.removeEventListener('compositionend', handleInputOnce);
+        compositionStarted = false;
+      };
+
+      content.addEventListener('compositionend', handleInputOnce);
+    } else handleInput(e);
   };
   content.onkeydown = function (event) {
     if (event.key === 'Tab') {
