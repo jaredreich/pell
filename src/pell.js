@@ -120,10 +120,26 @@ export const init = settings => {
   const content = settings.element.content = createElement('div')
   content.contentEditable = true
   content.className = classes.content
-  content.oninput = ({ target: { firstChild } }) => {
+
+  let compositionStarted = false;
+  content.addEventListener('compositionstart', () => compositionStarted = true);
+
+  const handleInput = ({ target: { firstChild } }) => {
     if (firstChild && firstChild.nodeType === 3) exec(formatBlock, `<${defaultParagraphSeparator}>`)
     else if (content.innerHTML === '<br>') content.innerHTML = ''
     settings.onChange(content.innerHTML)
+  };
+
+  content.oninput = e => {
+    if (compositionStarted) {
+      const handleInputOnce = e => {
+        handleInput(e)
+        content.removeEventListener('compositionend', handleInputOnce)
+        compositionStarted = false
+      };
+
+      content.addEventListener('compositionend', handleInputOnce)
+    } else handleInput(e)
   }
   content.onkeydown = event => {
     if (event.key === 'Tab') {
