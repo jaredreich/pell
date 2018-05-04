@@ -11,6 +11,9 @@ var formatBlock = 'formatBlock';
 var addEventListener = function addEventListener(parent, type, listener) {
   return parent.addEventListener(type, listener);
 };
+var removeEventListener = function removeEventListener(parent, type, listener) {
+  return parent.removeEventListener(type, listener);
+};
 var appendChild = function appendChild(parent, child) {
   return parent.appendChild(child);
 };
@@ -172,7 +175,8 @@ var init = function init(settings) {
   content.className = classes.content;
 
   var compositionStarted = false;
-  content.addEventListener('compositionstart', function () {
+
+  addEventListener(content, 'compositionstart', function () {
     return compositionStarted = true;
   });
 
@@ -186,12 +190,12 @@ var init = function init(settings) {
   content.oninput = function (e) {
     if (compositionStarted) {
       var handleInputOnce = function handleInputOnce(e) {
-        handleInput(e);
-        content.removeEventListener('compositionend', handleInputOnce);
         compositionStarted = false;
+        removeEventListener(content, 'compositionend', handleInputOnce);
+        handleInput(e);
       };
 
-      content.addEventListener('compositionend', handleInputOnce);
+      addEventListener(content, 'compositionend', handleInputOnce);
     } else handleInput(e);
   };
   content.onkeydown = function (event) {
