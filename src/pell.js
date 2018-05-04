@@ -1,6 +1,7 @@
 const defaultParagraphSeparatorString = 'defaultParagraphSeparator'
 const formatBlock = 'formatBlock'
 const addEventListener = (parent, type, listener) => parent.addEventListener(type, listener)
+const removeEventListener = (parent, type, listener) => parent.removeEventListener(type, listener)
 const appendChild = (parent, child) => parent.appendChild(child)
 const createElement = tag => document.createElement(tag)
 const queryCommandState = command => document.queryCommandState(command)
@@ -122,7 +123,8 @@ export const init = settings => {
   content.className = classes.content
 
   let compositionStarted = false;
-  content.addEventListener('compositionstart', () => compositionStarted = true);
+
+  addEventListener(content, 'compositionstart', () => compositionStarted = true);
 
   const handleInput = ({ target: { firstChild } }) => {
     if (firstChild && firstChild.nodeType === 3) exec(formatBlock, `<${defaultParagraphSeparator}>`)
@@ -133,12 +135,12 @@ export const init = settings => {
   content.oninput = e => {
     if (compositionStarted) {
       const handleInputOnce = e => {
-        handleInput(e)
-        content.removeEventListener('compositionend', handleInputOnce)
         compositionStarted = false
+        removeEventListener(content, 'compositionend', handleInputOnce)
+        handleInput(e)
       };
 
-      content.addEventListener('compositionend', handleInputOnce)
+      addEventListener(content, 'compositionend', handleInputOnce)
     } else handleInput(e)
   }
   content.onkeydown = event => {
