@@ -118,6 +118,7 @@ export const init = settings => {
   appendChild(settings.element, actionbar)
 
   const content = settings.element.content = createElement('div')
+  content.innerHTML = settings.content || ''; 
   content.contentEditable = true
   content.className = classes.content
   content.oninput = ({ target: { firstChild } }) => {
