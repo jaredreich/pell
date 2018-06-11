@@ -1,7 +1,0 @@
-{
-  "eslint.options": {
-    "configFile": ".eslintrc"
-  },
-  "eslint.autoFixOnSave": true,
-  "prettier.semi": false,
-}
