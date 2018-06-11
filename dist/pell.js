@@ -138,10 +138,59 @@ var defaultActions = {
     icon: '&#128247;',
     title: 'Image',
     result: function result() {
-      var url = window.prompt('Enter the image URL');
-      if (url) exec('insertImage', url);
+      // const url = window.prompt('Enter the image URL')
+      // if (url) exec('insertImage', url)
+      imageEnterOrUpload();
     }
   }
+};
+
+var imageEnterOrUpload = function imageEnterOrUpload() {
+  var uploadImageInput = document.querySelector('.pell-upload-image');
+  // window.confirm(
+  //   'Which way you would like, from a URL(yes) or uploading (no)?'
+  // )
+
+  if (!uploadImageInput) {
+    var url = window.prompt('Enter the image URL');
+    if (url) exec('insertImage', url);
+  } else {
+    uploadImageInput.click();
+  }
+};
+
+var initUploadImageInput = function initUploadImageInput(settings) {
+  var uploadAPI = settings.upload && settings.upload.api;
+  if (uploadAPI) {
+    var input = createElement('input');
+    input.type = 'file';
+    input.className = 'pell-upload-image';
+    input.hidden = true;
+    input.addEventListener('change', function (e) {
+      // const url = e.target.value
+      var image = e.target.files[0];
+      var fd = new FormData();
+      fd.append('pell-upload-image', image);
+      uploadImage({ api: uploadAPI, data: fd }, function (url) {
+        if (data.success) exec('insertImage', url);
+      });
+    });
+    appendChild(settings.element, input);
+  }
+};
+
+var uploadImage = function uploadImage(_ref, cb) {
+  var api = _ref.api,
+      data = _ref.data;
+
+  window.fetch && fetch(api, {
+    method: 'POST',
+    body: data
+  }).then(function (res) {
+    return res.json();
+  }).then(function (data) {
+    // { success: 0, url:'xxx' }
+  }).catch(console.error);
 };
 
 var defaultClasses = {
@@ -153,7 +202,9 @@ var defaultClasses = {
 
 var init = function init(settings) {
   var actions = settings.actions ? settings.actions.map(function (action) {
-    if (typeof action === 'string') return defaultActions[action];else if (defaultActions[action.name]) return _extends({}, defaultActions[action.name], action);
+    if (typeof action === 'string') return defaultActions[action];else if (defaultActions[action.name]) {
+      return _extends({}, defaultActions[action.name], action);
+    }
     return action;
   }) : Object.keys(defaultActions).map(function (action) {
     return defaultActions[action];
@@ -170,10 +221,12 @@ var init = function init(settings) {
   var content = settings.element.content = createElement('div');
   content.contentEditable = true;
   content.className = classes.content;
-  content.oninput = function (_ref) {
-    var firstChild = _ref.target.firstChild;
+  content.oninput = function (_ref2) {
+    var firstChild = _ref2.target.firstChild;
 
-    if (firstChild && firstChild.nodeType === 3) exec(formatBlock, '<' + defaultParagraphSeparator + '>');else if (content.innerHTML === '<br>') content.innerHTML = '';
+    if (firstChild && firstChild.nodeType === 3) {
+      exec(formatBlock, '<' + defaultParagraphSeparator + '>');
+    } else if (content.innerHTML === '<br>') content.innerHTML = '';
     settings.onChange(content.innerHTML);
   };
   content.onkeydown = function (event) {
@@ -211,6 +264,9 @@ var init = function init(settings) {
 
   if (settings.styleWithCSS) exec('styleWithCSS');
   exec(defaultParagraphSeparatorString, defaultParagraphSeparator);
+
+  // init a upload image input or not
+  initUploadImageInput(settings);
 
   return settings.element;
 };

@@ -44,7 +44,7 @@ Included actions:
 - Code
 - Horizontal Rule
 - Link
-- Image
+- Image (support uploading)
 
 Other available actions (listed at https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand):
 - Justify Center
