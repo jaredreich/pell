@@ -1,14 +1,12 @@
 const defaultParagraphSeparatorString = 'defaultParagraphSeparator'
 const formatBlock = 'formatBlock'
-const addEventListener = (parent, type, listener) =>
-  parent.addEventListener(type, listener)
+const addEventListener = (parent, type, listener) => parent.addEventListener(type, listener)
 const appendChild = (parent, child) => parent.appendChild(child)
 const createElement = tag => document.createElement(tag)
 const queryCommandState = command => document.queryCommandState(command)
 const queryCommandValue = command => document.queryCommandValue(command)
 
-export const exec = (command, value = null) =>
-  document.execCommand(command, false, value)
+export const exec = (command, value = null) => document.execCommand(command, false, value)
 
 const defaultActions = {
   bold: {
@@ -95,10 +93,7 @@ const defaultActions = {
 }
 
 const imageEnterOrUpload = function () {
-  const uploadImageInput = document.querySelector('.pell-upload-image')
-  // window.confirm(
-  //   'Which way you would like, from a URL(yes) or uploading (no)?'
-  // )
+  const uploadImageInput = document.querySelector('.pell input[type="file"]')
 
   if (!uploadImageInput) {
     const url = window.prompt('Enter the image URL')
@@ -109,19 +104,27 @@ const imageEnterOrUpload = function () {
 }
 
 const uploadImage = function ({ api, data }, success, error) {
-  window.fetch &&
-    fetch(api, {
+  window.fetch && window.fetch(
+    api,
+    {
       method: 'POST',
       body: data
-    })
-      .then(res => res.json())
-      .then(
-        data => {
-          // { success: 0, url:'xxx' }
-          if (data.success) success(data.url)
-        },
-        err => error(err)
-      )
+    }
+  )
+    .then(res => res.json())
+    .then(
+      data => {
+        /**
+         * responsive data format:
+         *  {
+         *    success: true,
+         *    url: 'xxx'
+         *  }
+         */
+        if (data.success) success(data.url)
+      },
+      err => error(err)
+    )
 }
 
 const initUploadImageInput = function (settings) {
@@ -129,16 +132,19 @@ const initUploadImageInput = function (settings) {
   if (uploadAPI) {
     const input = createElement('input')
     input.type = 'file'
-    input.className = 'pell-upload-image'
     input.hidden = true
     input.addEventListener('change', e => {
-      // const url = e.target.value
       const image = e.target.files[0]
       const fd = new window.FormData()
       fd.append('pell-upload-image', image)
-      uploadImage({ api: uploadAPI, data: fd }, url => {
-        exec('insertImage', url)
-      })
+      uploadImage(
+        {
+          api: uploadAPI,
+          data: fd
+        },
+        url => exec('insertImage', url),
+        err => window.alert(err)
+      )
     })
     appendChild(settings.element, input)
   }
@@ -153,40 +159,35 @@ const defaultClasses = {
 
 export const init = settings => {
   const actions = settings.actions
-    ? settings.actions.map(action => {
-      if (typeof action === 'string') return defaultActions[action]
-      else if (defaultActions[action.name]) {
-        return { ...defaultActions[action.name], ...action }
-      }
-      return action
-    })
+    ? (
+      settings.actions.map(action => {
+        if (typeof action === 'string') return defaultActions[action]
+        else if (defaultActions[action.name]) return { ...defaultActions[action.name], ...action }
+        return action
+      })
+    )
     : Object.keys(defaultActions).map(action => defaultActions[action])
 
   const classes = { ...defaultClasses, ...settings.classes }
 
-  const defaultParagraphSeparator =
-    settings[defaultParagraphSeparatorString] || 'div'
+  const defaultParagraphSeparator = settings[defaultParagraphSeparatorString] || 'div'
 
   const actionbar = createElement('div')
   actionbar.className = classes.actionbar
   appendChild(settings.element, actionbar)
 
-  const content = (settings.element.content = createElement('div'))
+  const content = settings.element.content = createElement('div')
   content.contentEditable = true
   content.className = classes.content
   content.oninput = ({ target: { firstChild } }) => {
-    if (firstChild && firstChild.nodeType === 3) {
-      exec(formatBlock, `<${defaultParagraphSeparator}>`)
-    } else if (content.innerHTML === '<br>') content.innerHTML = ''
+    if (firstChild && firstChild.nodeType === 3) exec(formatBlock, `<${defaultParagraphSeparator}>`)
+    else if (content.innerHTML === '<br>') content.innerHTML = ''
     settings.onChange(content.innerHTML)
   }
   content.onkeydown = event => {
     if (event.key === 'Tab') {
       event.preventDefault()
-    } else if (
-      event.key === 'Enter' &&
-      queryCommandValue(formatBlock) === 'blockquote'
-    ) {
+    } else if (event.key === 'Enter' && queryCommandValue(formatBlock) === 'blockquote') {
       setTimeout(() => exec(formatBlock, `<${defaultParagraphSeparator}>`), 0)
     }
   }
@@ -201,8 +202,7 @@ export const init = settings => {
     button.onclick = () => action.result() && content.focus()
 
     if (action.state) {
-      const handler = () =>
-        button.classList[action.state() ? 'add' : 'remove'](classes.selected)
+      const handler = () => button.classList[action.state() ? 'add' : 'remove'](classes.selected)
       addEventListener(content, 'keyup', handler)
       addEventListener(content, 'mouseup', handler)
       addEventListener(button, 'click', handler)

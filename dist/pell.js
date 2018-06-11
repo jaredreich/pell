@@ -146,10 +146,7 @@ var defaultActions = {
 };
 
 var imageEnterOrUpload = function imageEnterOrUpload() {
-  var uploadImageInput = document.querySelector('.pell-upload-image');
-  // window.confirm(
-  //   'Which way you would like, from a URL(yes) or uploading (no)?'
-  // )
+  var uploadImageInput = document.querySelector('.pell input[type="file"]');
 
   if (!uploadImageInput) {
     var url = window.prompt('Enter the image URL');
@@ -159,38 +156,50 @@ var imageEnterOrUpload = function imageEnterOrUpload() {
   }
 };
 
-var initUploadImageInput = function initUploadImageInput(settings) {
-  var uploadAPI = settings.upload && settings.upload.api;
-  if (uploadAPI) {
-    var input = createElement('input');
-    input.type = 'file';
-    input.className = 'pell-upload-image';
-    input.hidden = true;
-    input.addEventListener('change', function (e) {
-      // const url = e.target.value
-      var image = e.target.files[0];
-      var fd = new FormData();
-      fd.append('pell-upload-image', image);
-      uploadImage({ api: uploadAPI, data: fd }, function (url) {
-        if (data.success) exec('insertImage', url);
-      });
-    });
-    appendChild(settings.element, input);
-  }
-};
-
-var uploadImage = function uploadImage(_ref, cb) {
+var uploadImage = function uploadImage(_ref, success, error) {
   var api = _ref.api,
       data = _ref.data;
 
-  window.fetch && fetch(api, {
+  window.fetch && window.fetch(api, {
     method: 'POST',
     body: data
   }).then(function (res) {
     return res.json();
   }).then(function (data) {
-    // { success: 0, url:'xxx' }
-  }).catch(console.error);
+    /**
+     * responsive data format:
+     *  {
+     *    success: true,
+     *    url: 'xxx'
+     *  }
+     */
+    if (data.success) success(data.url);
+  }, function (err) {
+    return error(err);
+  });
+};
+
+var initUploadImageInput = function initUploadImageInput(settings) {
+  var uploadAPI = settings.upload && settings.upload.api;
+  if (uploadAPI) {
+    var input = createElement('input');
+    input.type = 'file';
+    input.hidden = true;
+    input.addEventListener('change', function (e) {
+      var image = e.target.files[0];
+      var fd = new window.FormData();
+      fd.append('pell-upload-image', image);
+      uploadImage({
+        api: uploadAPI,
+        data: fd
+      }, function (url) {
+        return exec('insertImage', url);
+      }, function (err) {
+        return window.alert(err);
+      });
+    });
+    appendChild(settings.element, input);
+  }
 };
 
 var defaultClasses = {
@@ -202,9 +211,7 @@ var defaultClasses = {
 
 var init = function init(settings) {
   var actions = settings.actions ? settings.actions.map(function (action) {
-    if (typeof action === 'string') return defaultActions[action];else if (defaultActions[action.name]) {
-      return _extends({}, defaultActions[action.name], action);
-    }
+    if (typeof action === 'string') return defaultActions[action];else if (defaultActions[action.name]) return _extends({}, defaultActions[action.name], action);
     return action;
   }) : Object.keys(defaultActions).map(function (action) {
     return defaultActions[action];
@@ -224,9 +231,7 @@ var init = function init(settings) {
   content.oninput = function (_ref2) {
     var firstChild = _ref2.target.firstChild;
 
-    if (firstChild && firstChild.nodeType === 3) {
-      exec(formatBlock, '<' + defaultParagraphSeparator + '>');
-    } else if (content.innerHTML === '<br>') content.innerHTML = '';
+    if (firstChild && firstChild.nodeType === 3) exec(formatBlock, '<' + defaultParagraphSeparator + '>');else if (content.innerHTML === '<br>') content.innerHTML = '';
     settings.onChange(content.innerHTML);
   };
   content.onkeydown = function (event) {
