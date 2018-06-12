@@ -87,14 +87,14 @@ const defaultActions = {
     result: () => {
       // const url = window.prompt('Enter the image URL')
       // if (url) exec('insertImage', url)
-      imageEnterOrUpload()
+      execInsertImageAction()
     }
   }
 }
 
-const imageEnterOrUpload = function () {
+// default for not set `upload` config
+const execInsertImageAction = function () {
   const uploadImageInput = document.querySelector('.pell input[type="file"]')
-
   if (!uploadImageInput) {
     const url = window.prompt('Enter the image URL')
     if (url) exec('insertImage', url)
@@ -103,6 +103,7 @@ const imageEnterOrUpload = function () {
   }
 }
 
+// just set `url`, `method` and `body` for fetch api
 const uploadImage = function ({ api, data }, success, error) {
   window.fetch && window.fetch(
     api,
@@ -114,13 +115,8 @@ const uploadImage = function ({ api, data }, success, error) {
     .then(res => res.json())
     .then(
       data => {
-        /**
-         * responsive data format:
-         *  {
-         *    success: true,
-         *    url: 'xxx'
-         *  }
-         */
+        // responsive data format:
+        // { success: true, url: 'xxx' }
         if (data.success) success(data.url)
       },
       err => error(err)
@@ -133,7 +129,7 @@ const initUploadImageInput = function (settings) {
     const input = createElement('input')
     input.type = 'file'
     input.hidden = true
-    input.addEventListener('change', e => {
+    addEventListener(input, 'change', e => {
       const image = e.target.files[0]
       const fd = new window.FormData()
       fd.append('pell-upload-image', image)

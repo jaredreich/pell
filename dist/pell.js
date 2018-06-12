@@ -140,14 +140,13 @@ var defaultActions = {
     result: function result() {
       // const url = window.prompt('Enter the image URL')
       // if (url) exec('insertImage', url)
-      imageEnterOrUpload();
+      execInsertImageAction();
     }
   }
-};
 
-var imageEnterOrUpload = function imageEnterOrUpload() {
+  // default for not set `upload` config
+};var execInsertImageAction = function execInsertImageAction() {
   var uploadImageInput = document.querySelector('.pell input[type="file"]');
-
   if (!uploadImageInput) {
     var url = window.prompt('Enter the image URL');
     if (url) exec('insertImage', url);
@@ -156,6 +155,7 @@ var imageEnterOrUpload = function imageEnterOrUpload() {
   }
 };
 
+// just set `url`, `method` and `body` for fetch api
 var uploadImage = function uploadImage(_ref, success, error) {
   var api = _ref.api,
       data = _ref.data;
@@ -166,13 +166,8 @@ var uploadImage = function uploadImage(_ref, success, error) {
   }).then(function (res) {
     return res.json();
   }).then(function (data) {
-    /**
-     * responsive data format:
-     *  {
-     *    success: true,
-     *    url: 'xxx'
-     *  }
-     */
+    // responsive data format:
+    // { success: true, url: 'xxx' }
     if (data.success) success(data.url);
   }, function (err) {
     return error(err);
@@ -185,7 +180,7 @@ var initUploadImageInput = function initUploadImageInput(settings) {
     var input = createElement('input');
     input.type = 'file';
     input.hidden = true;
-    input.addEventListener('change', function (e) {
+    addEventListener(input, 'change', function (e) {
       var image = e.target.files[0];
       var fd = new window.FormData();
       fd.append('pell-upload-image', image);
