@@ -8,6 +8,34 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var defaultParagraphSeparatorString = 'defaultParagraphSeparator';
 var formatBlock = 'formatBlock';
+
+var debounce = function debounce(fn, time) {
+  var timeout = void 0;
+
+  return function () {
+    var _this = this,
+        _arguments = arguments;
+
+    var functionCall = function functionCall() {
+      return fn.apply(_this, _arguments);
+    };
+
+    clearTimeout(timeout);
+    timeout = setTimeout(functionCall, time);
+  };
+};
+var getMutationObserver = function getMutationObserver(elementSelector, callback) {
+  var observer = new MutationObserver(callback);
+  var config = {
+    attributes: true,
+    childList: true,
+    characterData: true,
+    subtree: true
+  };
+  observer.observe(elementSelector, config);
+
+  return observer;
+};
 var addEventListener = function addEventListener(parent, type, listener) {
   return parent.addEventListener(type, listener);
 };
@@ -170,12 +198,22 @@ var init = function init(settings) {
   var content = settings.element.content = createElement('div');
   content.contentEditable = true;
   content.className = classes.content;
-  content.oninput = function (_ref) {
-    var firstChild = _ref.target.firstChild;
 
-    if (firstChild && firstChild.nodeType === 3) exec(formatBlock, '<' + defaultParagraphSeparator + '>');else if (content.innerHTML === '<br>') content.innerHTML = '';
+  var divOnInputChange = function divOnInputChange(observer) {
+    var firstChild = observer[0].target.firstChild;
+
+    if (firstChild && firstChild.nodeType === 3) {
+      exec(formatBlock, '<' + defaultParagraphSeparator + '>');
+    } else if (content.innerHTML === '<br>') {
+      content.innerHTML = '';
+    }
     settings.onChange(content.innerHTML);
   };
+
+  // Observe any changes on content block (work on IE)
+  // Rate-limit event handling with debounce to reduce performance impact
+  getMutationObserver(content, debounce(divOnInputChange, 250));
+
   content.onkeydown = function (event) {
     if (event.key === 'Tab') {
       event.preventDefault();

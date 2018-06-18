@@ -1,5 +1,28 @@
 const defaultParagraphSeparatorString = 'defaultParagraphSeparator'
 const formatBlock = 'formatBlock'
+
+const debounce = (fn, time) => {
+  let timeout
+
+  return function() {
+    const functionCall = () => fn.apply(this, arguments);
+    
+    clearTimeout(timeout)
+    timeout = setTimeout(functionCall, time)
+  }
+}
+const getMutationObserver = (elementSelector, callback) => {
+  const observer = new MutationObserver(callback)
+  const config = { 
+    attributes: true,
+    childList: true,
+    characterData: true,
+    subtree: true 
+  }
+  observer.observe(elementSelector, config)
+
+  return observer
+}
 const addEventListener = (parent, type, listener) => parent.addEventListener(type, listener)
 const appendChild = (parent, child) => parent.appendChild(child)
 const createElement = tag => document.createElement(tag)
@@ -120,11 +143,22 @@ export const init = settings => {
   const content = settings.element.content = createElement('div')
   content.contentEditable = true
   content.className = classes.content
-  content.oninput = ({ target: { firstChild } }) => {
-    if (firstChild && firstChild.nodeType === 3) exec(formatBlock, `<${defaultParagraphSeparator}>`)
-    else if (content.innerHTML === '<br>') content.innerHTML = ''
+
+  const divOnInputChange = (observer) => {
+    const firstChild = observer[0].target.firstChild;
+  
+    if (firstChild && firstChild.nodeType === 3) {
+      exec(formatBlock, '<' + defaultParagraphSeparator + '>')
+    } else if (content.innerHTML === '<br>') {
+      content.innerHTML = ''
+    }
     settings.onChange(content.innerHTML)
   }
+
+  // Observe any changes on content block (work on IE)
+  // Rate-limit event handling with debounce to reduce performance impact
+  getMutationObserver(content, debounce(divOnInputChange, 250))
+
   content.onkeydown = event => {
     if (event.key === 'Tab') {
       event.preventDefault()
