@@ -170,11 +170,34 @@ var init = function init(settings) {
   var content = settings.element.content = createElement('div');
   content.contentEditable = true;
   content.className = classes.content;
-  content.oninput = function (_ref) {
+
+  var formatIfTextNode = function formatIfTextNode(node) {
+    if (node && node.nodeType === 3) exec(formatBlock, '<' + defaultParagraphSeparator + '>');else if (content.innerHTML === '<br>') content.innerHTML = '';
+    settings.onChange(content.innerHTML);
+  };
+
+  /*
+  * Prevent formatting text before IME composition ended
+  * (which breaks composition of Chinese characters for example)
+  * https://developer.mozilla.org/en-US/docs/Mozilla/IME_handling_guide
+  **/
+  var isComposing = false;
+  addEventListener(content, 'compositionstart', function () {
+    isComposing = true;
+  });
+  addEventListener(content, 'compositionend', function (_ref) {
     var firstChild = _ref.target.firstChild;
 
-    if (firstChild && firstChild.nodeType === 3) exec(formatBlock, '<' + defaultParagraphSeparator + '>');else if (content.innerHTML === '<br>') content.innerHTML = '';
-    settings.onChange(content.innerHTML);
+    isComposing = false;
+    formatIfTextNode(firstChild);
+  });
+
+  content.oninput = function (_ref2) {
+    var firstChild = _ref2.target.firstChild;
+
+    if (!isComposing) {
+      formatIfTextNode(firstChild);
+    }
   };
   content.onkeydown = function (event) {
     if (event.key === 'Tab') {
