@@ -187,7 +187,7 @@ pell.exec(command<string>, value<string>)
 #### Example
 
 ```html
-<div id="pell"></div>
+<div id="editor" class="pell"></div>
 <div>
   HTML output:
   <div id="html-output" style="white-space:pre-wrap;"></div>
@@ -198,7 +198,7 @@ pell.exec(command<string>, value<string>)
 import { exec, init } from 'pell'
 
 const editor = init({
-  element: document.getElementById('pell'),
+  element: document.getElementById('editor'),
   onChange: html => {
     document.getElementById('html-output').textContent = html
   },
@@ -212,10 +212,10 @@ const editor = init({
       result: () => exec('italic')
     },
     {
-      name: 'custom',
-      icon: '<b><u><i>C</i></u></b>',
-      title: 'Custom Action',
-      result: () => console.log('YOLO')
+      name: 'backColor',
+      icon: '<div style="background-color:pink;">A</div>',
+      title: 'Highlight Color',
+      result: () => exec('backColor', 'pink')
     },
     {
       name: 'image',
@@ -248,7 +248,7 @@ editor.content.innerHTML = '<b><u><i>Initial content!</i></u></b>'
 #### Example (Markdown)
 
 ```html
-<div id="pell"></div>
+<div id="editor" class="pell"></div>
 <div>
   Markdown output:
   <div id="markdown-output" style="white-space:pre-wrap;"></div>
@@ -262,7 +262,7 @@ import Turndown from 'turndown'
 const { turndown } = new Turndown({ headingStyle: 'atx' })
 
 init({
-  element: document.getElementById('pell'),
+  element: document.getElementById('editor'),
   actions: ['bold', 'italic', 'heading1', 'heading2', 'olist', 'ulist'],
   onChange: html => {
     document.getElementById('markdown-output').innerHTML = turndown(html)

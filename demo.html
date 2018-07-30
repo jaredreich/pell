@@ -31,7 +31,7 @@
 
     <div class="content">
       <h1>pell</h1>
-      <div id="pell" class="pell"></div>
+      <div id="editor" class="pell"></div>
       <div style="margin-top:20px;">
         <h3>Text output:</h3>
         <div id="text-output"></div>
@@ -45,9 +45,8 @@
     <script src="dist/pell.js"></script>
     <script>
       var editor = window.pell.init({
-        element: document.getElementById('pell'),
+        element: document.getElementById('editor'),
         defaultParagraphSeparator: 'p',
-        styleWithCSS: false,
         onChange: function (html) {
           document.getElementById('text-output').innerHTML = html
           document.getElementById('html-output').textContent = html
