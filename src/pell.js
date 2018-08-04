@@ -1,83 +1,83 @@
 const defaultParagraphSeparatorString = 'defaultParagraphSeparator'
 const formatBlock = 'formatBlock'
-const addEventListener = (parent, type, listener) => parent.addEventListener(type, listener)
+
 const appendChild = (parent, child) => parent.appendChild(child)
 const createElement = tag => document.createElement(tag)
 const queryCommandState = command => document.queryCommandState(command)
 const queryCommandValue = command => document.queryCommandValue(command)
 
-export const exec = (command, value = null) => document.execCommand(command, false, value)
+export const exec = (command, value) => document.execCommand(command, false, value)
 
 const defaultActions = {
   bold: {
     icon: '<b>B</b>',
     title: 'Bold',
-    state: () => queryCommandState('bold'),
-    result: () => exec('bold')
+    state: queryCommandState.bind('bold'),
+    result: exec.bind(null, 'bold')
   },
   italic: {
     icon: '<i>I</i>',
     title: 'Italic',
-    state: () => queryCommandState('italic'),
-    result: () => exec('italic')
+    state: queryCommandState.bind('italic'),
+    result: exec.bind(null, 'italic')
   },
   underline: {
     icon: '<u>U</u>',
     title: 'Underline',
-    state: () => queryCommandState('underline'),
-    result: () => exec('underline')
+    state: queryCommandState.bind('underline'),
+    result: exec.bind(null, 'underline')
   },
   strikethrough: {
     icon: '<strike>S</strike>',
     title: 'Strike-through',
-    state: () => queryCommandState('strikeThrough'),
-    result: () => exec('strikeThrough')
+    state: queryCommandState.bind('strikeThrough'),
+    result: exec.bind(null, 'strikeThrough')
   },
   heading1: {
     icon: '<b>H<sub>1</sub></b>',
     title: 'Heading 1',
-    result: () => exec(formatBlock, '<h1>')
+    result: exec.bind(null, formatBlock, '<h1>')
   },
   heading2: {
     icon: '<b>H<sub>2</sub></b>',
     title: 'Heading 2',
-    result: () => exec(formatBlock, '<h2>')
+    result: exec.bind(null, formatBlock, '<h2>')
   },
   paragraph: {
     icon: '&#182;',
     title: 'Paragraph',
-    result: () => exec(formatBlock, '<p>')
+    result: exec.bind(null, formatBlock, '<p>')
   },
   quote: {
     icon: '&#8220; &#8221;',
     title: 'Quote',
-    result: () => exec(formatBlock, '<blockquote>')
+    result: exec.bind(null, formatBlock, '<blockquote>')
   },
   olist: {
     icon: '&#35;',
     title: 'Ordered List',
-    result: () => exec('insertOrderedList')
+    result: exec.bind(null, 'insertOrderedList')
   },
   ulist: {
     icon: '&#8226;',
     title: 'Unordered List',
-    result: () => exec('insertUnorderedList')
+    result: exec.bind(null, 'insertUnorderedList')
   },
   code: {
     icon: '&lt;/&gt;',
     title: 'Code',
-    result: () => exec(formatBlock, '<pre>')
+    result: exec.bind(null, formatBlock, '<pre>')
   },
   line: {
     icon: '&#8213;',
     title: 'Horizontal Line',
-    result: () => exec('insertHorizontalRule')
+    result: exec.bind(null, 'insertHorizontalRule')
   },
   link: {
     icon: '&#128279;',
     title: 'Link',
     result: () => {
-      const url = window.prompt('Enter the link URL')
+      const url = prompt('Enter the link URL')
       if (url) exec('createLink', url)
     }
   },
@@ -85,7 +85,7 @@ const defaultActions = {
     icon: '&#128247;',
     title: 'Image',
     result: () => {
-      const url = window.prompt('Enter the image URL')
+      const url = prompt('Enter the image URL')
       if (url) exec('insertImage', url)
     }
   }
@@ -103,7 +103,7 @@ export const init = settings => {
     ? (
       settings.actions.map(action => {
         if (typeof action === 'string') return defaultActions[action]
-        else if (defaultActions[action.name]) return { ...defaultActions[action.name], ...action }
+        if (defaultActions[action.name]) return { ...defaultActions[action.name], ...action }
         return action
       })
     )
@@ -115,7 +115,7 @@ export const init = settings => {
 
   const actionbar = createElement('div')
   actionbar.className = classes.actionbar
-  appendChild(settings.element, actionbar)
+  settings.element.appendChild(actionbar)
 
   const content = settings.element.content = createElement('div')
   content.contentEditable = true
@@ -132,24 +132,21 @@ export const init = settings => {
       setTimeout(() => exec(formatBlock, `<${defaultParagraphSeparator}>`), 0)
     }
   }
-  appendChild(settings.element, content)
+  settings.element.appendChild(content)
 
   actions.forEach(action => {
     const button = createElement('button')
     button.className = classes.button
     button.innerHTML = action.icon
     button.title = action.title
-    button.setAttribute('type', 'button')
     button.onclick = () => action.result() && content.focus()
 
     if (action.state) {
       const handler = () => button.classList[action.state() ? 'add' : 'remove'](classes.selected)
-      addEventListener(content, 'keyup', handler)
-      addEventListener(content, 'mouseup', handler)
-      addEventListener(button, 'click', handler)
+      ['keyup', 'mouseup', 'click'].map(e => content.addEventListener(e, handler))
     }
 
-    appendChild(actionbar, button)
+    actionbar.appendChild(button)
   })
 
   if (settings.styleWithCSS) exec('styleWithCSS')
