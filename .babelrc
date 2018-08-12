@@ -1,6 +1,26 @@
 {
   "presets": [
-    ["es2015", {"modules": false}],
-    "stage-0"
+    [
+      "env",
+      {
+        "modules": false,
+        "debug": false
+      }
+    ]
+  ],
+  "env": {
+    "testing": {
+      "presets": [
+        [
+          "env",
+          {
+            "modules": "commonjs"
+          }
+        ]
+      ]
+    }
+  },
+  "plugins": [
+    "transform-object-rest-spread"
   ]
 }
