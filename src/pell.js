@@ -36,22 +36,22 @@ const defaultActions = {
   heading1: {
     icon: '<b>H<sub>1</sub></b>',
     title: 'Heading 1',
-    result: () => exec(formatBlock, '<h1>')
+    result: () => exec(formatBlock, 'H1')
   },
   heading2: {
     icon: '<b>H<sub>2</sub></b>',
     title: 'Heading 2',
-    result: () => exec(formatBlock, '<h2>')
+    result: () => exec(formatBlock, 'H2')
   },
   paragraph: {
     icon: '&#182;',
     title: 'Paragraph',
-    result: () => exec(formatBlock, '<p>')
+    result: () => exec(formatBlock, 'P')
   },
   quote: {
     icon: '&#8220; &#8221;',
     title: 'Quote',
-    result: () => exec(formatBlock, '<blockquote>')
+    result: () => exec(formatBlock, 'BLOCKQUOTE')
   },
   olist: {
     icon: '&#35;',
@@ -66,7 +66,7 @@ const defaultActions = {
   code: {
     icon: '&lt;/&gt;',
     title: 'Code',
-    result: () => exec(formatBlock, '<pre>')
+    result: () => exec(formatBlock, 'PRE')
   },
   line: {
     icon: '&#8213;',
@@ -121,7 +121,7 @@ export const init = settings => {
   content.contentEditable = true
   content.className = classes.content
   content.oninput = ({ target: { firstChild } }) => {
-    if (firstChild && firstChild.nodeType === 3) exec(formatBlock, `<${defaultParagraphSeparator}>`)
+    if (firstChild && firstChild.nodeType === 3) exec(formatBlock, defaultParagraphSeparator.toUpperCase())
     else if (content.innerHTML === '<br>') content.innerHTML = ''
     settings.onChange(content.innerHTML)
   }
@@ -129,7 +129,7 @@ export const init = settings => {
     if (event.key === 'Tab') {
       event.preventDefault()
     } else if (event.key === 'Enter' && queryCommandValue(formatBlock) === 'blockquote') {
-      setTimeout(() => exec(formatBlock, `<${defaultParagraphSeparator}>`), 0)
+      setTimeout(() => exec(formatBlock, defaultParagraphSeparator.toUpperCase()), 0)
     }
   }
   appendChild(settings.element, content)
