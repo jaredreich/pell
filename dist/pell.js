@@ -6,24 +6,6 @@
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var defaultParagraphSeparatorString = 'defaultParagraphSeparator';
-var formatBlock = 'formatBlock';
-var addEventListener = function addEventListener(parent, type, listener) {
-  return parent.addEventListener(type, listener);
-};
-var appendChild = function appendChild(parent, child) {
-  return parent.appendChild(child);
-};
-var createElement = function createElement(tag) {
-  return document.createElement(tag);
-};
-var queryCommandState = function queryCommandState(command) {
-  return document.queryCommandState(command);
-};
-var queryCommandValue = function queryCommandValue(command) {
-  return document.queryCommandValue(command);
-};
-
 var exec = function exec(command) {
   var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
   return document.execCommand(command, false, value);
@@ -34,7 +16,7 @@ var defaultActions = {
     icon: '<b>B</b>',
     title: 'Bold',
     state: function state() {
-      return queryCommandState('bold');
+      return document.queryCommandState('bold');
     },
     result: function result() {
       return exec('bold');
@@ -44,7 +26,7 @@ var defaultActions = {
     icon: '<i>I</i>',
     title: 'Italic',
     state: function state() {
-      return queryCommandState('italic');
+      return document.queryCommandState('italic');
     },
     result: function result() {
       return exec('italic');
@@ -54,7 +36,7 @@ var defaultActions = {
     icon: '<u>U</u>',
     title: 'Underline',
     state: function state() {
-      return queryCommandState('underline');
+      return document.queryCommandState('underline');
     },
     result: function result() {
       return exec('underline');
@@ -64,7 +46,7 @@ var defaultActions = {
     icon: '<strike>S</strike>',
     title: 'Strike-through',
     state: function state() {
-      return queryCommandState('strikeThrough');
+      return document.queryCommandState('strikeThrough');
     },
     result: function result() {
       return exec('strikeThrough');
@@ -74,28 +56,28 @@ var defaultActions = {
     icon: '<b>H<sub>1</sub></b>',
     title: 'Heading 1',
     result: function result() {
-      return exec(formatBlock, '<h1>');
+      return exec('formatBlock', '<h1>');
     }
   },
   heading2: {
     icon: '<b>H<sub>2</sub></b>',
     title: 'Heading 2',
     result: function result() {
-      return exec(formatBlock, '<h2>');
+      return exec('formatBlock', '<h2>');
     }
   },
   paragraph: {
     icon: '&#182;',
     title: 'Paragraph',
     result: function result() {
-      return exec(formatBlock, '<p>');
+      return exec('formatBlock', '<p>');
     }
   },
   quote: {
     icon: '&#8220; &#8221;',
     title: 'Quote',
     result: function result() {
-      return exec(formatBlock, '<blockquote>');
+      return exec('formatBlock', '<blockquote>');
     }
   },
   olist: {
@@ -116,7 +98,7 @@ var defaultActions = {
     icon: '&lt;/&gt;',
     title: 'Code',
     result: function result() {
-      return exec(formatBlock, '<pre>');
+      return exec('formatBlock', '<pre>');
     }
   },
   line: {
@@ -152,65 +134,81 @@ var defaultClasses = {
 };
 
 var init = function init(settings) {
-  var actions = settings.actions ? settings.actions.map(function (action) {
-    if (typeof action === 'string') return defaultActions[action];else if (defaultActions[action.name]) return _extends({}, defaultActions[action.name], action);
+  var settingsActions = settings.actions || Object.keys(defaultActions);
+  var actions = settingsActions.map(function (action) {
+    if (action + '' === action) return defaultActions[action];else if (defaultActions[action.name]) return _extends({}, defaultActions[action.name]);
     return action;
-  }) : Object.keys(defaultActions).map(function (action) {
-    return defaultActions[action];
   });
 
   var classes = _extends({}, defaultClasses, settings.classes);
 
-  var defaultParagraphSeparator = settings[defaultParagraphSeparatorString] || 'div';
+  var defaultParagraphSeparator = settings.defaultParagraphSeparator || 'div';
 
-  var actionbar = createElement('div');
-  actionbar.className = classes.actionbar;
-  appendChild(settings.element, actionbar);
-
-  var content = settings.element.content = createElement('div');
+  var content = settings.element.content = document.createElement('div');
   content.contentEditable = true;
   content.className = classes.content;
-  content.oninput = function (_ref) {
+
+  var actionbar = document.createElement('div');
+  actionbar.className = classes.actionbar;
+
+  var inputHandler = function inputHandler(_ref) {
     var firstChild = _ref.target.firstChild;
 
-    if (firstChild && firstChild.nodeType === 3) exec(formatBlock, '<' + defaultParagraphSeparator + '>');else if (content.innerHTML === '<br>') content.innerHTML = '';
+    if (firstChild && firstChild.nodeType === 3) exec('formatBlock', '<' + defaultParagraphSeparator + '>');else if (content.innerHTML === '<br>') content.innerHTML = '';
     settings.onChange(content.innerHTML);
   };
-  content.onkeydown = function (event) {
+  var keydownHandler = function keydownHandler(event) {
     if (event.key === 'Tab') {
       event.preventDefault();
-    } else if (event.key === 'Enter' && queryCommandValue(formatBlock) === 'blockquote') {
+    } else if (event.key === 'Enter' && document.queryCommandValue('formatBlock') === 'blockquote') {
       setTimeout(function () {
-        return exec(formatBlock, '<' + defaultParagraphSeparator + '>');
+        return exec('formatBlock', '<' + defaultParagraphSeparator + '>');
       }, 0);
     }
   };
-  appendChild(settings.element, content);
+  var stateHandler = function stateHandler() {
+    actions.forEach(function (action) {
+      var button = action.state && actionbar.querySelector('[title="' + action.title + '"]');
+      button && button.classList[action.state() ? 'add' : 'remove'](classes.selected);
+    });
+  };
+
+  var actionHandler = function actionHandler(event) {
+    var action = actions.find(function (action) {
+      return event.target.title === action.title;
+    });
+    action && action.result.call(content) && content.focus();
+    stateHandler();
+  };
+
+  content.addEventListener('input', inputHandler);
+  content.addEventListener('keydown', keydownHandler);
+  content.addEventListener('keyup', stateHandler);
+  actionbar.addEventListener('click', actionHandler);
+
+  settings.element.appendChild(actionbar);
+  settings.element.appendChild(content);
 
   actions.forEach(function (action) {
-    var button = createElement('button');
+    var button = document.createElement('button');
     button.className = classes.button;
     button.innerHTML = action.icon;
     button.title = action.title;
     button.setAttribute('type', 'button');
-    button.onclick = function () {
-      return action.result() && content.focus();
-    };
-
-    if (action.state) {
-      var handler = function handler() {
-        return button.classList[action.state() ? 'add' : 'remove'](classes.selected);
-      };
-      addEventListener(content, 'keyup', handler);
-      addEventListener(content, 'mouseup', handler);
-      addEventListener(button, 'click', handler);
-    }
-
-    appendChild(actionbar, button);
+    actionbar.appendChild(button);
   });
 
   if (settings.styleWithCSS) exec('styleWithCSS');
-  exec(defaultParagraphSeparatorString, defaultParagraphSeparator);
+  exec('defaultParagraphSeparator', defaultParagraphSeparator);
+
+  settings.element.destroy = function () {
+    content.removeEventListener('input', inputHandler);
+    content.removeEventListener('keydown', keydownHandler);
+    content.removeEventListener('keyup', stateHandler);
+    actionbar.removeEventListener('click', actionHandler);
+    settings.element.removeChild(content);
+    settings.element.removeChild(actionbar);
+  };
 
   return settings.element;
 };

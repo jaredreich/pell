@@ -22,5 +22,8 @@
   width: 30px;
   vertical-align: bottom; }
 
+.pell-button > * {
+  pointer-events: none; }
+
 .pell-button-selected {
   background-color: #F0F0F0; }

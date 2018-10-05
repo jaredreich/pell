@@ -36,6 +36,10 @@ $pell-content-padding: 10px !default;
   vertical-align: bottom;
 }
 
+.pell-button > * {
+  pointer-events: none;
+}
+
 .pell-button-selected {
   background-color: $pell-button-selected-color;
 }

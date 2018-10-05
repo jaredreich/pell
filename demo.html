@@ -40,18 +40,34 @@
         <h3>HTML output:</h3>
         <pre id="html-output"></pre>
       </div>
+      <button id="create-or-destroy">Create/Destroy editor</button>
     </div>
 
     <script src="dist/pell.js"></script>
     <script>
-      var editor = window.pell.init({
-        element: document.getElementById('editor'),
-        defaultParagraphSeparator: 'p',
-        onChange: function (html) {
-          document.getElementById('text-output').innerHTML = html
-          document.getElementById('html-output').textContent = html
-        }
+      var editor = false
+      
+      function createEditor() {
+        editor = window.pell.init({
+          element: document.getElementById('editor'),
+          defaultParagraphSeparator: 'p',
+          onChange: function (html) {
+            document.getElementById('text-output').innerHTML = html
+            document.getElementById('html-output').textContent = html
+          }
+        })
+      }
+
+      function destroyEditor() {
+        editor.destroy()
+        editor = false
+      }
+
+      document.getElementById('create-or-destroy').addEventListener('click', function() {
+        editor ? destroyEditor() : createEditor()
       })
+
+      createEditor();
     </script>
 
   </body>
