@@ -78,7 +78,12 @@ const defaultActions = {
     title: 'Link',
     result: () => {
       const url = window.prompt('Enter the link URL')
-      if (url) exec('createLink', url)
+      if (url) {
+        const text = window.prompt('Enter the link TEXT (optional)')
+        text
+          ? exec('insertHTML', `<a href="${url}">${text}</a>`)
+          : exec('createLink', url)
+      }
     }
   },
   image: {

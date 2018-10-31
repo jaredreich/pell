@@ -131,7 +131,10 @@ var defaultActions = {
     title: 'Link',
     result: function result() {
       var url = window.prompt('Enter the link URL');
-      if (url) exec('createLink', url);
+      if (url) {
+        var text = window.prompt('Enter the link TEXT (optional)');
+        text ? exec('insertHTML', '<a href="' + url + '">' + text + '</a>') : exec('createLink', url);
+      }
     }
   },
   image: {
