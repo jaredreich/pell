@@ -85,9 +85,64 @@ const defaultActions = {
     icon: '&#128247;',
     title: 'Image',
     result: () => {
-      const url = window.prompt('Enter the image URL')
-      if (url) exec('insertImage', url)
+      // const url = window.prompt('Enter the image URL')
+      // if (url) exec('insertImage', url)
+      execInsertImageAction()
     }
+  }
+}
+
+// default for not set `upload` config
+const execInsertImageAction = function () {
+  const uploadImageInput = document.querySelector('.pell input[type="file"]')
+  if (!uploadImageInput) {
+    const url = window.prompt('Enter the image URL')
+    if (url) exec('insertImage', url)
+  } else {
+    uploadImageInput.click()
+  }
+}
+
+// just set `url`, `method` and `body` for fetch api
+const uploadImage = function ({ api, data }, success, error) {
+  window.fetch && window.fetch(
+    api,
+    {
+      method: 'POST',
+      body: data
+    }
+  )
+    .then(res => res.json())
+    .then(
+      data => {
+        // responsive data format:
+        // { success: true, url: 'xxx' }
+        if (data.success) success(data.url)
+      },
+      err => error(err)
+    )
+}
+
+const initUploadImageInput = function (settings) {
+  const uploadAPI = settings.upload && settings.upload.api
+  if (uploadAPI) {
+    const input = createElement('input')
+    input.type = 'file'
+    input.hidden = true
+    addEventListener(input, 'change', e => {
+      const image = e.target.files[0]
+      const fd = new window.FormData()
+      fd.append('pell-upload-image', image)
+      uploadImage(
+        {
+          api: uploadAPI,
+          data: fd
+        },
+        url => exec('insertImage', url),
+        err => window.alert(err)
+      )
+    })
+    appendChild(settings.element, input)
   }
 }
 
@@ -154,6 +209,9 @@ export const init = settings => {
 
   if (settings.styleWithCSS) exec('styleWithCSS')
   exec(defaultParagraphSeparatorString, defaultParagraphSeparator)
+
+  // init a upload image input or not
+  initUploadImageInput(settings)
 
   return settings.element
 }

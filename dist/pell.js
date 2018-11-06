@@ -138,9 +138,62 @@ var defaultActions = {
     icon: '&#128247;',
     title: 'Image',
     result: function result() {
-      var url = window.prompt('Enter the image URL');
-      if (url) exec('insertImage', url);
+      // const url = window.prompt('Enter the image URL')
+      // if (url) exec('insertImage', url)
+      execInsertImageAction();
     }
+  }
+
+  // default for not set `upload` config
+};var execInsertImageAction = function execInsertImageAction() {
+  var uploadImageInput = document.querySelector('.pell input[type="file"]');
+  if (!uploadImageInput) {
+    var url = window.prompt('Enter the image URL');
+    if (url) exec('insertImage', url);
+  } else {
+    uploadImageInput.click();
+  }
+};
+
+// just set `url`, `method` and `body` for fetch api
+var uploadImage = function uploadImage(_ref, success, error) {
+  var api = _ref.api,
+      data = _ref.data;
+
+  window.fetch && window.fetch(api, {
+    method: 'POST',
+    body: data
+  }).then(function (res) {
+    return res.json();
+  }).then(function (data) {
+    // responsive data format:
+    // { success: true, url: 'xxx' }
+    if (data.success) success(data.url);
+  }, function (err) {
+    return error(err);
+  });
+};
+
+var initUploadImageInput = function initUploadImageInput(settings) {
+  var uploadAPI = settings.upload && settings.upload.api;
+  if (uploadAPI) {
+    var input = createElement('input');
+    input.type = 'file';
+    input.hidden = true;
+    addEventListener(input, 'change', function (e) {
+      var image = e.target.files[0];
+      var fd = new window.FormData();
+      fd.append('pell-upload-image', image);
+      uploadImage({
+        api: uploadAPI,
+        data: fd
+      }, function (url) {
+        return exec('insertImage', url);
+      }, function (err) {
+        return window.alert(err);
+      });
+    });
+    appendChild(settings.element, input);
   }
 };
 
@@ -170,8 +223,8 @@ var init = function init(settings) {
   var content = settings.element.content = createElement('div');
   content.contentEditable = true;
   content.className = classes.content;
-  content.oninput = function (_ref) {
-    var firstChild = _ref.target.firstChild;
+  content.oninput = function (_ref2) {
+    var firstChild = _ref2.target.firstChild;
 
     if (firstChild && firstChild.nodeType === 3) exec(formatBlock, '<' + defaultParagraphSeparator + '>');else if (content.innerHTML === '<br>') content.innerHTML = '';
     settings.onChange(content.innerHTML);
@@ -211,6 +264,9 @@ var init = function init(settings) {
 
   if (settings.styleWithCSS) exec('styleWithCSS');
   exec(defaultParagraphSeparatorString, defaultParagraphSeparator);
+
+  // init a upload image input or not
+  initUploadImageInput(settings);
 
   return settings.element;
 };

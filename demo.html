@@ -50,6 +50,11 @@
         onChange: function (html) {
           document.getElementById('text-output').innerHTML = html
           document.getElementById('html-output').textContent = html
+        },
+        // if you want to upload image to server
+        // you must config this
+        upload: {
+          api: 'http://localhost:53595/api/files/img/upload'
         }
       })
     </script>
