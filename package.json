@@ -2,7 +2,7 @@
   "name": "pell",
   "description": "pell - the simplest and smallest WYSIWYG text editor for web, with no dependencies",
   "author": "Jared Reich",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "./dist/pell.min.js",
   "scripts": {
     "dev": "gulp",
