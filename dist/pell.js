@@ -177,9 +177,7 @@ var init = function init(settings) {
     settings.onChange(content.innerHTML);
   };
   content.onkeydown = function (event) {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-    } else if (event.key === 'Enter' && queryCommandValue(formatBlock) === 'blockquote') {
+    if (event.key === 'Enter' && queryCommandValue(formatBlock) === 'blockquote') {
       setTimeout(function () {
         return exec(formatBlock, '<' + defaultParagraphSeparator + '>');
       }, 0);
