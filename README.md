@@ -1,4 +1,4 @@
-<img src="./logo.png" width="256" alt="Logo">
+<img src="./images/logo.png" width="128" alt="Logo">
 
 [![npm](https://img.shields.io/npm/v/pell.svg)](https://www.npmjs.com/package/pell)
 [![cdnjs](https://img.shields.io/cdnjs/v/pell.svg)](https://cdnjs.com/libraries/pell)
@@ -275,7 +275,7 @@ init({
 #### Frameworks
 
 - [React](/examples/react.md)
-- [Vue] (/examples/vue.md)
+- [Vue](/examples/vue.md)
 
 ## Custom Styles
 
@@ -301,3 +301,9 @@ $pell-content-height: 400px;
 ## License
 
 MIT
+
+## Credits
+
+BrowserStack for cross browser testing:
+
+<a href="https://www.browserstack.com" target="_blank" rel="noopener noreferrer"><img width="128" src="./images/browserstack.png" alt="BrowserStack logo"></a>
