@@ -8,11 +8,7 @@ import 'pell/dist/pell.css'
 
 class App extends Component {
   editor = null
-
-  constructor (props) {
-    super(props)
-    this.state = { html: null }
-  }
+  state = { html: null }
 
   componentDidMount () {
     this.editor = init({
