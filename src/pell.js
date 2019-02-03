@@ -1,101 +1,22 @@
-const defaultParagraphSeparatorString = 'defaultParagraphSeparator'
-const formatBlock = 'formatBlock'
-const addEventListener = (parent, type, listener) => parent.addEventListener(type, listener)
-const appendChild = (parent, child) => parent.appendChild(child)
-const createElement = tag => document.createElement(tag)
-const queryCommandState = command => document.queryCommandState(command)
-const queryCommandValue = command => document.queryCommandValue(command)
+import {
+  defaultActions,
+} from './actions'
 
-export const exec = (command, value = null) => document.execCommand(command, false, value)
-
-const defaultActions = {
-  bold: {
-    icon: '<b>B</b>',
-    title: 'Bold',
-    state: () => queryCommandState('bold'),
-    result: () => exec('bold')
-  },
-  italic: {
-    icon: '<i>I</i>',
-    title: 'Italic',
-    state: () => queryCommandState('italic'),
-    result: () => exec('italic')
-  },
-  underline: {
-    icon: '<u>U</u>',
-    title: 'Underline',
-    state: () => queryCommandState('underline'),
-    result: () => exec('underline')
-  },
-  strikethrough: {
-    icon: '<strike>S</strike>',
-    title: 'Strike-through',
-    state: () => queryCommandState('strikeThrough'),
-    result: () => exec('strikeThrough')
-  },
-  heading1: {
-    icon: '<b>H<sub>1</sub></b>',
-    title: 'Heading 1',
-    result: () => exec(formatBlock, '<h1>')
-  },
-  heading2: {
-    icon: '<b>H<sub>2</sub></b>',
-    title: 'Heading 2',
-    result: () => exec(formatBlock, '<h2>')
-  },
-  paragraph: {
-    icon: '&#182;',
-    title: 'Paragraph',
-    result: () => exec(formatBlock, '<p>')
-  },
-  quote: {
-    icon: '&#8220; &#8221;',
-    title: 'Quote',
-    result: () => exec(formatBlock, '<blockquote>')
-  },
-  olist: {
-    icon: '&#35;',
-    title: 'Ordered List',
-    result: () => exec('insertOrderedList')
-  },
-  ulist: {
-    icon: '&#8226;',
-    title: 'Unordered List',
-    result: () => exec('insertUnorderedList')
-  },
-  code: {
-    icon: '&lt;/&gt;',
-    title: 'Code',
-    result: () => exec(formatBlock, '<pre>')
-  },
-  line: {
-    icon: '&#8213;',
-    title: 'Horizontal Line',
-    result: () => exec('insertHorizontalRule')
-  },
-  link: {
-    icon: '&#128279;',
-    title: 'Link',
-    result: () => {
-      const url = window.prompt('Enter the link URL')
-      if (url) exec('createLink', url)
-    }
-  },
-  image: {
-    icon: '&#128247;',
-    title: 'Image',
-    result: () => {
-      const url = window.prompt('Enter the image URL')
-      if (url) exec('insertImage', url)
-    }
-  }
-}
+import {
+  addEventListener,
+  appendChild,
+  createElement,
+  defaultParagraphSeparatorString,
+  exec,
+  formatBlock,
+  queryCommandValue,
+} from './utilities'
 
 const defaultClasses = {
   actionbar: 'pell-actionbar',
   button: 'pell-button',
   content: 'pell-content',
-  selected: 'pell-button-selected'
+  selected: 'pell-button-selected',
 }
 
 export const init = settings => {
@@ -155,5 +76,3 @@ export const init = settings => {
 
   return settings.element
 }
-
-export default { exec, init }
