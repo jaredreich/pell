@@ -101,6 +101,9 @@ var defaultActions = {
   olist: {
     icon: '&#35;',
     title: 'Ordered List',
+    state: function state() {
+      return queryCommandState('insertOrderedList');
+    },
     result: function result() {
       return exec('insertOrderedList');
     }
@@ -108,6 +111,9 @@ var defaultActions = {
   ulist: {
     icon: '&#8226;',
     title: 'Unordered List',
+    state: function state() {
+      return queryCommandState('insertUnorderedList');
+    },    
     result: function result() {
       return exec('insertUnorderedList');
     }
@@ -172,8 +178,18 @@ var init = function init(settings) {
   content.className = classes.content;
   content.oninput = function (_ref) {
     var firstChild = _ref.target.firstChild;
-
     if (firstChild && firstChild.nodeType === 3) exec(formatBlock, '<' + defaultParagraphSeparator + '>');else if (content.innerHTML === '<br>') content.innerHTML = '';
+
+    var h1 = document.getElementById('Heading 1');
+    var h2 = document.getElementById('Heading 2');
+    var p = document.getElementById('Paragraph');
+    var q = document.getElementById('Quote');
+    if(queryCommandState('insertUnorderedList') != false || queryCommandState('insertOrderedList') != false){
+      h1.disabled = h2.disabled = p.disabled = q.disabled = true;      
+    }else {
+      h1.disabled = h2.disabled = p.disabled = q.disabled = false;      
+    }
+
     settings.onChange(content.innerHTML);
   };
   content.onkeydown = function (event) {
@@ -189,6 +205,7 @@ var init = function init(settings) {
     var button = createElement('button');
     button.className = classes.button;
     button.innerHTML = action.icon;
+    button.id = action.title;
     button.title = action.title;
     button.setAttribute('type', 'button');
     button.onclick = function () {
