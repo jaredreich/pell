@@ -4,9 +4,14 @@
   "author": "Jared Reich",
   "version": "2.0.0",
   "main": "index.js",
-  "files": ["index.js", "dist", "src"],
+  "files": [
+    "index.js",
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "rollup -c && terser dist/pell.js -c -m -o dist/pell.min.js",
+    "dev": "nodemon --watch index.js --watch src -x \"npm run build\"",
     "lint": "./node_modules/.bin/eslint .js ./"
   },
   "repository": {
@@ -29,6 +34,7 @@
     "@babel/core": "7.4.0",
     "@babel/preset-env": "7.4.2",
     "eslint-config-jared": "1.6.1",
+    "nodemon": "1.18.10",
     "rollup": "1.7.4",
     "rollup-plugin-babel": "4.3.2",
     "terser": "3.17.0"
