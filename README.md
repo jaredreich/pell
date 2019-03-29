@@ -1,3 +1,7 @@
+#### [v2 working branch](https://github.com/jaredreich/pell/tree/v2) and [v2 project board](https://github.com/jaredreich/pell/projects/1)
+
+---
+
 <img src="./images/logo.png" width="128" alt="Logo">
 
 [![npm](https://img.shields.io/npm/v/pell.svg)](https://www.npmjs.com/package/pell)
