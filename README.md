@@ -28,7 +28,6 @@ Live demo: [https://jaredreich.com/pell](https://jaredreich.com/pell)
 ## Features
 
 * Pure JavaScript, no dependencies, written in ES6
-* Easily customizable with the sass file (pell.scss) or overwrite the CSS
 
 Included actions:
 - Bold
@@ -276,27 +275,6 @@ init({
 
 - [React](/examples/react.md)
 - [Vue](/examples/vue.md)
-
-## Custom Styles
-
-#### SCSS
-
-```scss
-$pell-content-height: 400px;
-// See all overwriteable variables in src/pell.scss
-
-// Then import pell.scss into styles:
-@import '../../node_modules/pell/src/pell';
-```
-
-#### CSS
-
-```css
-/* After pell styles are applied to DOM: */
-.pell-content {
-  height: 400px;
-}
-```
 
 ## License
 

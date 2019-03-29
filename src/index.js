@@ -1,3 +1,0 @@
-export {
-  init,
-} from './pell'
