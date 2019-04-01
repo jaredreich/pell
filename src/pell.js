@@ -138,7 +138,10 @@ export const init = settings => {
     button.innerHTML = action.icon
     button.title = action.title
     button.setAttribute('type', 'button')
-    button.onclick = () => action.result() && content.focus()
+    button.onclick = (e) => {
+      	action.result() && content.focus()
+		e.preventDefault()
+    }
 
     if (action.state) {
       const handler = () => button.classList[action.state() ? 'add' : 'remove'](classes.selected)
