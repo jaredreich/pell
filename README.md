@@ -1,4 +1,8 @@
-<img src="./logo.png" width="256" alt="Logo">
+#### [v2 working branch](https://github.com/jaredreich/pell/tree/v2) and [v2 project board](https://github.com/jaredreich/pell/projects/1)
+
+---
+
+<img src="./images/logo.png" width="128" alt="Logo">
 
 [![npm](https://img.shields.io/npm/v/pell.svg)](https://www.npmjs.com/package/pell)
 [![cdnjs](https://img.shields.io/cdnjs/v/pell.svg)](https://cdnjs.com/libraries/pell)
@@ -188,10 +192,12 @@ pell.exec(command<string>, value<string>)
 - link
 - image
 
-#### Example
+## Examples
+
+#### General
 
 ```html
-<div id="pell"></div>
+<div id="editor" class="pell"></div>
 <div>
   HTML output:
   <div id="html-output" style="white-space:pre-wrap;"></div>
@@ -202,7 +208,7 @@ pell.exec(command<string>, value<string>)
 import { exec, init } from 'pell'
 
 const editor = init({
-  element: document.getElementById('pell'),
+  element: document.getElementById('editor'),
   onChange: html => {
     document.getElementById('html-output').textContent = html
   },
@@ -216,10 +222,10 @@ const editor = init({
       result: () => exec('italic')
     },
     {
-      name: 'custom',
-      icon: '<b><u><i>C</i></u></b>',
-      title: 'Custom Action',
-      result: () => console.log('YOLO')
+      name: 'backColor',
+      icon: '<div style="background-color:pink;">A</div>',
+      title: 'Highlight Color',
+      result: () => exec('backColor', 'pink')
     },
     {
       name: 'image',
@@ -252,7 +258,7 @@ editor.content.innerHTML = '<b><u><i>Initial content!</i></u></b>'
 #### Example (Markdown)
 
 ```html
-<div id="pell"></div>
+<div id="editor" class="pell"></div>
 <div>
   Markdown output:
   <div id="markdown-output" style="white-space:pre-wrap;"></div>
@@ -266,13 +272,18 @@ import Turndown from 'turndown'
 const { turndown } = new Turndown({ headingStyle: 'atx' })
 
 init({
-  element: document.getElementById('pell'),
+  element: document.getElementById('editor'),
   actions: ['bold', 'italic', 'heading1', 'heading2', 'olist', 'ulist'],
   onChange: html => {
     document.getElementById('markdown-output').innerHTML = turndown(html)
   }
 })
 ```
+
+#### Frameworks
+
+- [React](/examples/react.md)
+- [Vue](/examples/vue.md)
 
 ## Custom Styles
 
@@ -298,3 +309,9 @@ $pell-content-height: 400px;
 ## License
 
 MIT
+
+## Credits
+
+BrowserStack for cross browser testing:
+
+<a href="https://www.browserstack.com" target="_blank" rel="noopener noreferrer"><img width="128" src="./images/browserstack.png" alt="BrowserStack logo"></a>
