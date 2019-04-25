@@ -7,6 +7,7 @@ $pell-button-selected-color: #F0F0F0 !default;
 $pell-button-width: 30px !default;
 $pell-content-height: 300px !default;
 $pell-content-padding: 10px !default;
+$pell-placeholder-color: rgba(10, 10, 10, 0.4) !default;
 
 .pell {
   border: $pell-border-width $pell-border-style $pell-border-color;
@@ -19,7 +20,17 @@ $pell-content-padding: 10px !default;
   outline: 0;
   overflow-y: auto;
   padding: $pell-content-padding;
+  position: relative;
+  &:empty:before{
+    content: attr(data-placeholder);
+    position: absolute;
+    color: $pell-placeholder-color;
+  }
+  &:empty:focus:before{
+    color: rgba($pell-placeholder-color, 0.1);
+  }
 }
+
 
 .pell-actionbar {
   background-color: $pell-actionbar-color;
