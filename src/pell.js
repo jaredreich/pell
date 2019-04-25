@@ -129,9 +129,7 @@ export const init = settings => {
     settings.onChange(content.innerHTML)
   }
   content.onkeydown = event => {
-    if (event.key === 'Tab') {
-      event.preventDefault()
-    } else if (event.key === 'Enter' && queryCommandValue(formatBlock) === 'blockquote') {
+    if (event.key === 'Enter' && queryCommandValue(formatBlock) === 'blockquote') {
       setTimeout(() => exec(formatBlock, `<${defaultParagraphSeparator}>`), 0)
     }
   }
