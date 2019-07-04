@@ -88,6 +88,19 @@ const defaultActions = {
       const url = window.prompt('Enter the image URL')
       if (url) exec('insertImage', url)
     }
+  },
+  eraser: {
+    icon: '&#10007',
+    title: 'Clear',
+    result: () => {
+      if (window.getSelection().toString()) {
+        let linesToDelete = window.getSelection().toString().split('\n').join('<br>');
+        window.pell.exec(formatBlock, '<div>');
+        document.execCommand('insertHTML', false, '<div>' + linesToDelete + '</div>');
+      } else {
+        window.pell.exec(formatBlock, '<div>')
+      }
+    }
   }
 }
 
