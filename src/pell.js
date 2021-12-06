@@ -34,6 +34,12 @@ export const init = settings => {
 
   const defaultParagraphSeparator = settings[defaultParagraphSeparatorString] || 'div'
 
+  if (typeof settings.onInputUseFormatBlock !== 'undefined') {
+    settings.onInputUseFormatBlock = settings.onInputUseFormatBlock === true
+  } else {
+    settings.onInputUseFormatBlock = true
+  }
+
   const actionbar = createElement('div')
   actionbar.className = classes.actionbar
   appendChild(settings.element, actionbar)
@@ -42,7 +48,7 @@ export const init = settings => {
   content.contentEditable = true
   content.className = classes.content
   content.oninput = ({ target: { firstChild } }) => {
-    if (firstChild && firstChild.nodeType === 3) exec(formatBlock, `<${defaultParagraphSeparator}>`)
+    if (firstChild && firstChild.nodeType === 3 && settings.onInputUseFormatBlock) exec(formatBlock, `<${defaultParagraphSeparator}>`)
     else if (content.innerHTML === '<br>') content.innerHTML = ''
     settings.onChange(content.innerHTML)
   }

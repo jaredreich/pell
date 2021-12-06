@@ -206,6 +206,13 @@
     var classes = _objectSpread({}, defaultClasses, settings.classes);
 
     var defaultParagraphSeparator = settings[defaultParagraphSeparatorString] || 'div';
+
+    if (typeof settings.onInputUseFormatBlock !== 'undefined') {
+      settings.onInputUseFormatBlock = settings.onInputUseFormatBlock === true;
+    } else {
+      settings.onInputUseFormatBlock = true;
+    }
+
     var actionbar = createElement('div');
     actionbar.className = classes.actionbar;
     appendChild(settings.element, actionbar);
@@ -215,7 +222,7 @@
 
     content.oninput = function (_ref) {
       var firstChild = _ref.target.firstChild;
-      if (firstChild && firstChild.nodeType === 3) exec(formatBlock, "<".concat(defaultParagraphSeparator, ">"));else if (content.innerHTML === '<br>') content.innerHTML = '';
+      if (firstChild && firstChild.nodeType === 3 && settings.onInputUseFormatBlock) exec(formatBlock, "<".concat(defaultParagraphSeparator, ">"));else if (content.innerHTML === '<br>') content.innerHTML = '';
       settings.onChange(content.innerHTML);
     };
 
