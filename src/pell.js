@@ -121,8 +121,9 @@ export const init = settings => {
   content.contentEditable = true
   content.className = classes.content
   content.oninput = ({ target: { firstChild } }) => {
-    if (firstChild && firstChild.nodeType === 3) exec(formatBlock, `<${defaultParagraphSeparator}>`)
-    else if (content.innerHTML === '<br>') content.innerHTML = ''
+    // commented out in favor of: https://github.com/jaredreich/pell/issues/207
+    //if (firstChild && firstChild.nodeType === 3) exec(formatBlock, `<${defaultParagraphSeparator}>`)
+    if (content.innerHTML === '<br>') content.innerHTML = ''
     settings.onChange(content.innerHTML)
   }
   content.onkeydown = event => {
