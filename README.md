@@ -9,9 +9,7 @@
 
 > pell is the simplest and smallest WYSIWYG text editor for web, with no dependencies
 
-Live demo: [https://jaredreich.com/pell](https://jaredreich.com/pell)
-
-[![Live demo](/demo.gif?raw=true "Demo")](https://jaredreich.com/pell)
+![Demo](/demo.gif?raw=true "Demo")
 
 ## Comparisons
 

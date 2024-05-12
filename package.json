@@ -24,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/jaredreich/pell/issues"
   },
-  "homepage": "https://jaredreich.com/pell",
+  "homepage": "https://github.com/jaredreich/pell",
   "devDependencies": {
     "babel-core": "6.23.1",
     "babel-preset-es2015": "6.22.0",
