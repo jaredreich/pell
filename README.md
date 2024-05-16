@@ -137,6 +137,10 @@ pell.init({
   // Outputs <span style="font-weight: bold;"></span> instead of <b></b>
   styleWithCSS: false,
 
+  // <string>, optional, default = ''
+  // Adds a placeholder text to the input area
+  placeholder: "",
+
   // <Array[string | Object]>, string if overwriting, object if customizing/creating
   // action.name<string> (only required if overwriting)
   // action.icon<string> (optional if overwriting, required if custom action)

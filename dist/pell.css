@@ -7,7 +7,14 @@
   height: 300px;
   outline: 0;
   overflow-y: auto;
-  padding: 10px; }
+  padding: 10px;
+  position: relative; }
+  .pell-content:empty:before {
+    content: attr(data-placeholder);
+    position: absolute;
+    color: rgba(10, 10, 10, 0.4); }
+  .pell-content:empty:focus:before {
+    color: rgba(10, 10, 10, 0.1); }
 
 .pell-actionbar {
   background-color: #FFF;

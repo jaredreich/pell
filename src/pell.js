@@ -120,6 +120,9 @@ export const init = settings => {
   const content = settings.element.content = createElement('div')
   content.contentEditable = true
   content.className = classes.content
+  if (settings.placeholder) {
+    content.dataset.placeholder = settings.placeholder
+  }
   content.oninput = ({ target: { firstChild } }) => {
     if (firstChild && firstChild.nodeType === 3) exec(formatBlock, `<${defaultParagraphSeparator}>`)
     else if (content.innerHTML === '<br>') content.innerHTML = ''

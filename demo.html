@@ -47,6 +47,7 @@
       var editor = window.pell.init({
         element: document.getElementById('editor'),
         defaultParagraphSeparator: 'p',
+        placeholder: "Type something..."
         onChange: function (html) {
           document.getElementById('text-output').innerHTML = html
           document.getElementById('html-output').textContent = html
