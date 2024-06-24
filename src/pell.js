@@ -103,13 +103,13 @@ export const init = settings => {
     ? (
       settings.actions.map(action => {
         if (typeof action === 'string') return defaultActions[action]
-        else if (defaultActions[action.name]) return { ...defaultActions[action.name], ...action }
+        else if (defaultActions[action.name]) return Object.assign({}, defaultActions[action.name], action)
         return action
       })
     )
     : Object.keys(defaultActions).map(action => defaultActions[action])
 
-  const classes = { ...defaultClasses, ...settings.classes }
+  const classes = Object.assign({}, defaultClasses, settings.classes)
 
   const defaultParagraphSeparator = settings[defaultParagraphSeparatorString] || 'div'
 
